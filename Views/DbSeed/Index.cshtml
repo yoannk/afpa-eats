@@ -1,0 +1,32 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ajout de données dans la base</h2>
+
+@using (Html.BeginForm())
+{
+<div class="form-group">
+    <label for="users">Nombre d'utilisateurs</label>
+    <input type="number" class="form-control" id="users" name="utilisateursQte" value="2">
+
+    <label for="restaurants">Nombre de restaurants</label>
+    <input type="number" class="form-control" id="restaurants" name="restaurantsQte" value="2">
+
+    <label for="produits">Nombre de produits</label>
+    <input type="number" class="form-control" id="produits" name="produitsQte" value="2">
+</div>
+    <button type="submit" class="btn btn-danger btn-block">Effacer la BDD et ajout des nouvelles données</button>
+}
+
+<table class="table table-bordered table-sm table-striped">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr><td>@item</td></tr>
+        }
+    }
+</table>
