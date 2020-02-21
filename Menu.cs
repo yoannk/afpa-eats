@@ -25,7 +25,9 @@ namespace AfpEat
         public string Nom { get; set; }
         public bool Statut { get; set; }
         public decimal Prix { get; set; }
+        public int IdRestaurant { get; set; }
     
+        public virtual Restaurant Restaurant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CommandeProduit> CommandeProduits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
