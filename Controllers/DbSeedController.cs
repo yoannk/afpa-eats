@@ -30,6 +30,7 @@ namespace AfpEat.Controllers
             CreateUtilisateurs(Convert.ToInt32(form["utilisateursQte"]));
             CreateTypeCuisinePhotos();
             CreateTypeCuisine();
+            CreateCategorie();
             CreateRestaurants(Convert.ToInt32(form["restaurantsQte"]));
             CreateProduits(Convert.ToInt32(form["produitsQte"]));
 
@@ -43,12 +44,15 @@ namespace AfpEat.Controllers
             db.Database.ExecuteSqlCommand("DELETE FROM [Restaurant]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Produit]");
             db.Database.ExecuteSqlCommand("DELETE FROM [TypeCuisine]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [Categorie]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Photo]");
             db.Database.ExecuteSqlCommand("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'");
         }
 
         private void CreateUtilisateurs(int amount)
         {
+            db.Utilisateurs.Add(new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Matricule = "yoann", Password = "123", Statut = true, Solde = 50 });
+
             for (int i = 0; i < amount; i++)
             {
                 Utilisateur utilisateur = new Utilisateur()
@@ -162,7 +166,7 @@ namespace AfpEat.Controllers
                 };
 
                 db.Produits.Add(produit);
-                logs.Add($"Ajout produit #{i} {produit.Nom} : {produit.Description} -  {produit.Prix} €");
+                logs.Add($"Ajout produit #{i} {produit.Nom} : {produit.Description} - {produit.Prix} €");
             }
 
             db.SaveChanges();

@@ -153,6 +153,7 @@
     <Compile Include="CommandeProduit.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\DbSeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UtilisateursController.cs" />
@@ -180,6 +181,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConnexionViewModel.cs" />
     <Compile Include="Operation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -237,6 +239,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Ressources\Images\Site\avatar.png" />
+    <Content Include="Ressources\Images\Site\Logo_Afpa.jpg" />
     <Content Include="Ressources\Images\TypeCuisine\asiatique.jpg" />
     <Content Include="Ressources\Images\TypeCuisine\boulangerie.jpg" />
     <Content Include="Ressources\Images\TypeCuisine\brasserie.jpg" />
@@ -392,10 +396,10 @@
     <Content Include="Views\Utilisateurs\Edit.cshtml" />
     <Content Include="Views\Utilisateurs\Index.cshtml" />
     <Content Include="Views\DbSeed\Index.cshtml" />
+    <Content Include="Views\Security\Connexion.cshtml" />
+    <Content Include="Views\Security\Inscription.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />

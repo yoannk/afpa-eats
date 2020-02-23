@@ -1,3 +1,22 @@
 ﻿body {
     padding-top: 5rem;
 }
+
+.login-page, .register-page {
+    background: #e9ecef;
+}
+
+.login-box, .register-box {
+    width: 100%;
+    max-width: 420px;
+    margin: auto;
+}
+
+.login-logo a, .register-logo a {
+    text-decoration: none;
+    color: #86BD24;
+    font-size: 2.1rem;
+    font-weight: 300;
+    margin-bottom: .9rem;
+    text-align: center;
+}
