@@ -20,5 +20,10 @@ namespace AfpEat.Controllers
 
             return View(panier);
         }
+
+        public ActionResult PanierAjax()
+        {
+            return View();
+        }
     }
 }

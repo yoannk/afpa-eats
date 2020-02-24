@@ -417,6 +417,7 @@
     <Content Include="Views\Restaurants\Edit.cshtml" />
     <Content Include="Views\Restaurants\Index.cshtml" />
     <Content Include="Views\Home\Panier.cshtml" />
+    <Content Include="Views\Home\PanierAjax.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
