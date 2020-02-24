@@ -153,9 +153,12 @@
     <Compile Include="CommandeProduit.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\ProduitsController.cs" />
+    <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\DbSeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SWController.cs" />
     <Compile Include="Controllers\UtilisateursController.cs" />
     <Compile Include="EtatCommande.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -182,6 +185,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ConnexionViewModel.cs" />
+    <Compile Include="Models\ProduitPanier.cs" />
     <Compile Include="Operation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -193,6 +197,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Restaurant.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SessionUtilisateur.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
@@ -213,6 +220,7 @@
     <Compile Include="Utilisateur.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\bdd_afpeat.sql" />
@@ -398,6 +406,17 @@
     <Content Include="Views\DbSeed\Index.cshtml" />
     <Content Include="Views\Security\Connexion.cshtml" />
     <Content Include="Views\Security\Inscription.cshtml" />
+    <Content Include="Views\Produits\Create.cshtml" />
+    <Content Include="Views\Produits\Delete.cshtml" />
+    <Content Include="Views\Produits\Details.cshtml" />
+    <Content Include="Views\Produits\Edit.cshtml" />
+    <Content Include="Views\Produits\Index.cshtml" />
+    <Content Include="Views\Restaurants\Create.cshtml" />
+    <Content Include="Views\Restaurants\Delete.cshtml" />
+    <Content Include="Views\Restaurants\Details.cshtml" />
+    <Content Include="Views\Restaurants\Edit.cshtml" />
+    <Content Include="Views\Restaurants\Index.cshtml" />
+    <Content Include="Views\Home\Panier.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
