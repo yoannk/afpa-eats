@@ -9,9 +9,16 @@ namespace AfpEat.Controllers
 {
     public class HomeController : Controller
     {
+        private AfpEatEntities db = new AfpEatEntities();
+
         public ActionResult Index()
         {
-            return View();
+            HomeViewModel homeViewModel = new HomeViewModel();
+
+            homeViewModel.Restaurants = db.Restaurants.ToList();
+            homeViewModel.TypeCuisines = db.TypeCuisines.ToList();
+
+            return View(homeViewModel);
         }
 
         public ActionResult Panier()

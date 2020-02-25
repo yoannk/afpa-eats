@@ -1,7 +1,7 @@
 ﻿@using AfpEat.Models
 
 @{
-    Utilisateur utilisateur = (Utilisateur)HttpContext.Current.Session["Utilisateur"];
+    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
     List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Current.Application[Session.SessionID] ?? new List<ProduitPanier>();
 }
 

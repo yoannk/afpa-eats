@@ -30,6 +30,9 @@ namespace AfpEat.Controllers
 
                 if (utilisateur != null)
                 {
+                    utilisateur.IdSession = Session.SessionID;
+                    db.SaveChanges();
+
                     Session["Utilisateur"] = utilisateur;
                     return RedirectToAction("Index", "Home");
                 }

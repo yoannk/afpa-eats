@@ -80,7 +80,6 @@
                 <p>Votre produit a été ajouté au panier.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">OK</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
             </div>
         </div>
@@ -96,16 +95,13 @@
                     url: '@Url.Action("AddProduit", "SW")',
                     type: 'POST',
                     data: JSON.stringify({ idProduit: @Model.IdProduit, idSession: '@Session.SessionID' }),
-                    dataType: 'json', //on désire recevoir du HTML
+                    dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         $("#panier").modal('show');
                         $("#panierCount").html(data);
                     },
                     error: () => alert("Error")
-                    //error: function () {
-                    //    alert("Error");
-                    //}
                 });
             });
         });

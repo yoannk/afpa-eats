@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Panier";
+    string isConnected = Session["Utilisateur"] != null ? "true" : "false";
 }
 
 <h2>Panier</h2>
@@ -56,9 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Photo)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdProduit }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdProduit }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdProduit })
                 </td>
             </tr>
         }
@@ -66,3 +67,64 @@
 
 
 </table>
+
+<button id="btnCommande" class="btn btn-danger">Je commande</button>
+
+<div id="modalConnexion" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Se Connecter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="login" placeholder="Matricule">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Mot de passe">
+                </div>
+                <div class="mb-3">
+                    <button id="btnConnexion" type="submit" class="btn btn-primary btn-block">Se connecter</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnCommande").click(function () {
+
+                if (@isConnected) {
+                    callCommandeSW();
+                } else {
+                    $("#modalConnexion").modal('show');
+                }
+                
+            });
+        });
+
+        function callCommandeSW() {
+            $.ajax({
+                    url: '@Url.Action("SaveCommande", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idSession: '@Session.SessionID' }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: () => alert("Error")
+                });
+        }
+
+    </script>
+}
