@@ -20,3 +20,10 @@
     margin-bottom: .9rem;
     text-align: center;
 }
+
+img.homeTypeCuisine {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    overflow: hidden;
+}

@@ -68,7 +68,7 @@
 
 </table>
 
-<button id="btnCommande" class="btn btn-danger">Je commande</button>
+<button id="btnCommande" class="btn btn-primary">Je commande</button>
 
 <div id="modalConnexion" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -102,28 +102,64 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#btnCommande").click(function () {
-
                 if (@isConnected) {
-                    callCommandeSW();
+                    saveCommandeSW();
                 } else {
-                    $("#modalConnexion").modal('show');
+                    document.location.href='@Url.Action("Connexion", "Security")';
+                    //$('modalConnexion').modal('show');
                 }
-                
+            });
+
+            $("#btnConnexion").click(function () {
+                if (@isConnected) {
+                    saveCommandeSW();
+                } else {
+                    $('modalConnexion').modal('show');
+                }
             });
         });
 
-        function callCommandeSW() {
+        function saveCommandeSW() {
             $.ajax({
-                    url: '@Url.Action("SaveCommande", "SW")',
-                    type: 'POST',
-                    data: JSON.stringify({ idSession: '@Session.SessionID' }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: () => alert("Error")
-                });
+                url: '@Url.Action("SaveCommande", "SW")',
+                type: 'POST',
+                data: JSON.stringify({ idSession: '@Session.SessionID' }),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    document.location.href='@Url.Action("Index", "Home")';
+                },
+                error: () => alert("Error")
+            });
+        }
+
+        function loginUtilisateurSW() {
+            var matricule = $("#btnMatricule").val();
+            var password = $("#btnPassword").val();
+
+            if (matricule != "" && password !=""){
+                var data = {
+                    'idSession': '@Session.SessionID',
+                    'matricule': matricule, 'password':password
+                };
+            }
+
+            $.ajax({
+                url: '@Url.Action("LoginUtilisateur", "SW")',
+                type: 'POST',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.error == 1) {
+                        alert(data.message);
+                    }else {
+                        SaveCommandeSW();
+                        $('modalConnexion').modal('show');
+                    }
+                },
+                error: () => alert("Error")
+            });
         }
 
     </script>

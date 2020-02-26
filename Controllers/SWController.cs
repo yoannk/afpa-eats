@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace AfpEat.Controllers
 {
@@ -86,6 +87,7 @@ namespace AfpEat.Controllers
                 return Json("Votre solde est insuffisant.", JsonRequestBehavior.AllowGet);
             }
 
+            utilisateur.Solde -= prixTotal;
 
             Commande commande = new Commande()
             {
@@ -93,7 +95,7 @@ namespace AfpEat.Controllers
                 IdRestaurant = idRestaurant,
                 Date = DateTime.Now,
                 Prix = prixTotal,
-                IdCommande = 1
+                IdEtatCommande = 1
             };
 
             //db.Commandes.Add(commande);

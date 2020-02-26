@@ -19,6 +19,7 @@ namespace AfpEat.Controllers
 
         // POST: Connexion
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel)
         {
             string login = connexionViewModel.Login;
