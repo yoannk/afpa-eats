@@ -99,7 +99,8 @@
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         $("#panier").modal('show');
-                        $("#panierCount").html(data);
+                        $("#panierCount").html("(" + data.quantite + ")");
+                        $("#panierPrixTotal").html(data.prixTotalFormat + " €");
                     },
                     error: () => alert("Error")
                 });

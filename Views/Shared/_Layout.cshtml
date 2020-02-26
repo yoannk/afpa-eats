@@ -3,6 +3,17 @@
 @{
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
     List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Current.Application[Session.SessionID] ?? new List<ProduitPanier>();
+    // TODO : model panier
+    int quantite = 0;
+    decimal prixTotal = 0;
+
+    foreach (var item in panier)
+    {
+        quantite += item.Quantite;
+        prixTotal += item.Prix * item.Quantite;
+    }
+
+    string prixTotalFormat = String.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prixTotal);
 }
 
 <!DOCTYPE html>
@@ -33,7 +44,7 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Panier", "Home")"><span id="panierCount">@(panier != null ? panier.Count.ToString() : "0")</span> <i class="fa fa-shopping-cart"></i> Panier</a>
+                <a class="nav-link" href="@Url.Action("Panier", "Home")"><span id="panierCount">(@quantite)</span> <span id="panierPrixTotal">@prixTotalFormat €</span> <i class="fa fa-shopping-cart"></i> Panier</a>
             </li>
 
             @if (utilisateur != null)

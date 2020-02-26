@@ -1,6 +1,7 @@
 ﻿using AfpEat.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,9 @@ namespace AfpEat.Controllers
         public JsonResult AddProduit(int idProduit, string idSession)
         {
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
+            int quantite = 0;
+            decimal prixTotal = 0;
+            string prixTotalFormat = "";
 
             List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[idSession] ?? new List<ProduitPanier>();
 
@@ -39,7 +43,15 @@ namespace AfpEat.Controllers
                 HttpContext.Application[idSession] = panier;
             }
 
-            return Json(panier.Count, JsonRequestBehavior.AllowGet);
+            foreach (var item in panier)
+            {
+                quantite += item.Quantite;
+                prixTotal += item.Prix * item.Quantite;
+            }
+
+            prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prixTotal);
+
+            return Json(new { quantite, prixTotal, prixTotalFormat }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetProduits(string idSession)
