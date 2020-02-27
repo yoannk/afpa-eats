@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AfpEat;
+using AfpEat.Models;
 
 namespace AfpEat.Controllers
 {
@@ -19,6 +20,21 @@ namespace AfpEat.Controllers
         {
             var produits = db.Produits.Include(p => p.Categorie).Include(p => p.Restaurant);
             return View(produits.ToList());
+        }
+
+        // GET: Produits/Commande
+        public ActionResult Commande()
+        {
+            List<Produit> produits = db.Produits.Include(p => p.Categorie).Include(p => p.Restaurant).Where(p => p.Quantite > 0).ToList();
+            List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[Session.SessionID] ?? new List<ProduitPanier>();
+
+            CommandeViewModel commandeViewModel = new CommandeViewModel()
+            {
+                produitsDisponible = produits,
+                Panier = panier
+            };
+
+            return View(commandeViewModel);
         }
 
         // GET: Produits/Details/5
@@ -73,6 +89,7 @@ namespace AfpEat.Controllers
             Produit produit = db.Produits.Find(id);
             if (produit == null)
             {
+
                 return HttpNotFound();
             }
             ViewBag.IdCategorie = new SelectList(db.Categories, "IdCategorie", "Nom", produit.IdCategorie);

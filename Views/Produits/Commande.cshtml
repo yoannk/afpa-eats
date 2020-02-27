@@ -1,0 +1,100 @@
+﻿@model AfpEat.Models.CommandeViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Commander</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Produit
+        </th>
+        <th>
+            Prix
+        </th>
+        <th>
+            Quantité
+        </th>
+        <th>
+            Catégorie
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.produitsDisponible)
+    {
+
+        var produit = Model.Panier.FirstOrDefault(p => p.IdProduit == item.IdProduit);
+        int quantite = produit?.Quantite ?? 0;
+
+        string prixFormat = String.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", item.Prix);
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @prixFormat
+            </td>
+            <td>
+                @quantite
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categorie.Nom)
+            </td>
+            <td>
+                <button data-id="@item.IdProduit" id="addToCart" class="addToCart btn btn-outline-success" style="min-width: 40px;max-width: 40px;">+</button>
+                <button data-id="@item.IdProduit" class="removeToCart btn btn-outline-danger" style="min-width: 40px;max-width: 40px;">-</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".addToCart").click(function () {
+                var idProduit = $(this).data("id");
+                var tdQte = $(this).closest("tr").find("td:nth-child(3)");
+                $.ajax({
+                    url: '@Url.Action("AddProduit", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idProduit: idProduit, idSession: '@Session.SessionID' }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        //$("#panier").modal('show');
+                        $("#panierCount").text("(" + data.quantiteTotale + ")");
+                        $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                        tdQte.text(data.quantiteProduit);
+                    },
+                    error: () => alert("Error")
+                });
+            });
+
+            $(".removeToCart").click(function () {
+                var idProduit = $(this).data("id");
+                var tdQte = $(this).closest("tr").find("td:nth-child(3)");
+                $.ajax({
+                    url: '@Url.Action("RemoveProduit", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idProduit: idProduit, idSession: '@Session.SessionID' }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        //$("#panier").modal('show');
+                        $("#panierCount").text("(" + data.quantiteTotale + ")");
+                        $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                        tdQte.text(data.quantiteProduit);
+                    },
+                    error: () => alert("Error")
+                });
+            });
+        });
+
+    </script>
+}

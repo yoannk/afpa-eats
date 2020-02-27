@@ -3,7 +3,6 @@
 @{
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
     List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Current.Application[Session.SessionID] ?? new List<ProduitPanier>();
-    // TODO : model panier
     int quantite = 0;
     decimal prixTotal = 0;
 
@@ -39,6 +38,7 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Accueil</a>
                 <a class="nav-item nav-link" href="@Url.Action("Index", "Produits")"><i class="fa fa-th-list"></i> Produits</a>
+                <a class="nav-item nav-link" href="@Url.Action("Commande", "Produits")"><i class="fa fa-cutlery"></i> Commander</a>
             </div>
         </div>
 
@@ -69,6 +69,8 @@
                     <a class="nav-link" href="@Url.Action("Connexion", "Security")"><i class="fa fa-user"></i> Connexion</a>
                 </li>
             }
+
+            @*@(utilisateur != null ? Html.RenderPartial("") : Html.RenderPartial(""))*@
 
         </ul>
 
