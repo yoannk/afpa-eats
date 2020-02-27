@@ -21,6 +21,19 @@ namespace AfpEat.Controllers
             return View(restaurants.ToList());
         }
 
+        public ActionResult ParSpecialitee(int? idTypeCuisine)
+        {
+            if (idTypeCuisine == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            List<Restaurant> restaurants = db.Restaurants.Where(r => r.IdTypeCuisine == idTypeCuisine).ToList();
+            ViewBag.specialitee = db.TypeCuisines.Find(idTypeCuisine).Nom;
+
+            return View(restaurants);
+        }
+
         // GET: Restaurants/Details/5
         public ActionResult Details(int? id)
         {

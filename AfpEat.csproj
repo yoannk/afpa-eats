@@ -419,6 +419,7 @@
     <Content Include="Views\Home\Panier.cshtml" />
     <Content Include="Views\Home\PanierAjax.cshtml" />
     <Content Include="Views\Produits\Commande.cshtml" />
+    <Content Include="Views\Restaurants\ParSpecialitee.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
