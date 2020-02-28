@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AfpEat;
+using AfpEat.Models;
 
 namespace AfpEat.Controllers
 {
@@ -46,7 +47,12 @@ namespace AfpEat.Controllers
             {
                 return HttpNotFound();
             }
-            return View(restaurant);
+
+            RestaurantDetailViewModel restaurantDetailViewModel = new RestaurantDetailViewModel();
+            restaurantDetailViewModel.Restaurant = restaurant;
+            restaurantDetailViewModel.Produits = restaurant.Produits.GroupBy(p => p.Categorie.Nom).ToDictionary(p => p.Key, p => p.ToList());
+
+            return View(restaurantDetailViewModel);
         }
 
         // GET: Restaurants/Create
