@@ -46,6 +46,10 @@ namespace AfpEat.Controllers
             db.Database.ExecuteSqlCommand("DELETE FROM [TypeCuisine]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Categorie]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Photo]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [Commande]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [CommandeProduit]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [RestaurantPhoto]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [ProduitPhoto]");
             db.Database.ExecuteSqlCommand("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'");
         }
 
@@ -118,34 +122,95 @@ namespace AfpEat.Controllers
 
         private void CreateRestaurants(int amount)
         {
-            var idTypeCuisines = db.TypeCuisines.Select(tc => tc.IdTypeCuisine).ToList();
+            CreateRestaurant("Asiatique", "Pokawa", "Pokawa.jpg");
+            CreateRestaurant("Asiatique", "Sushi Shop", "Sushi Shop.jpg");
+            CreateRestaurant("Asiatique", "SHAKA Poke", "SHAKA Poke.jpg");
 
-            for (int i = 0; i < amount; i++)
-            {
-                var person = new Bogus.Person("fr");
+            CreateRestaurant("Boulangerie", "La Mie Câline", "La Mie Caline.jpg");
+            CreateRestaurant("Boulangerie", "Maison Kayser", "Maison Kayser.jpg");
+            CreateRestaurant("Boulangerie", "Boulangerie Beaubourg", "Boulangerie Beaubourg.jpg");
+            CreateRestaurant("Boulangerie", "Pomme de Pain", "Pomme de Pain.jpg");
+            CreateRestaurant("Boulangerie", "Boulangerie artisanale Zerzour", "Boulangerie artisanale Zerzour.jpg");
 
-                var restaurant = new Restaurant()
-                {
-                    Nom = faker.Company.CompanyName(),
-                    IdTypeCuisine = faker.PickRandom(idTypeCuisines),
-                    Description = faker.Lorem.Paragraph(),
-                    Budget = faker.Random.Int(3, 15),
-                    Adresse = person.Address.Street,
-                    Telephone = faker.Random.Replace("01########"),
-                    Mobile = faker.Random.Replace("06########"),
-                    Email = person.Email,
-                    CodePostal = person.Address.ZipCode,
-                    Ville = person.Address.City,
-                    Login = person.UserName,
-                    Password = faker.Internet.Password()
+            CreateRestaurant("Brasserie", "Shake it Easy", "Shake it Easy.jpg");
 
-                };
+            CreateRestaurant("Fastfood", "KFC", "KFC.jpg");
+            CreateRestaurant("Fastfood", "Cheezer", "Cheezer.jpg");
+            CreateRestaurant("Fastfood", "Nabab Kebab", "Nabab Kebab.jpg");
+            CreateRestaurant("Fastfood", "Burger & Fries", "Burger & Fries.jpg");
+            CreateRestaurant("Fastfood", "Les Burgers de Papa", "Les Burgers de Papa.jpg");
+            CreateRestaurant("Fastfood", "Mac Doner", "Mac Doner.jpg");
 
-                db.Restaurants.Add(restaurant);
-                logs.Add($"Ajout restaurant #{i} {restaurant.Nom}");
-            }
+            CreateRestaurant("Francaise", "Fermier Gourmet", "Fermier Gourmet.jpg");
+            CreateRestaurant("Francaise", "La cochonnaille", "La cochonnaille.jpg");
+            CreateRestaurant("Francaise", "Nos Grands-mères ont du Talent", "Nos Grands-mères ont du Talent.jpg");
+            CreateRestaurant("Francaise", "Canard Street", "Canard Street.jpg");
+            CreateRestaurant("Francaise", "Zoe Bouillon", "Zoe Bouillon.jpg");
+            CreateRestaurant("Francaise", "Kitchen Paris", "Kitchen Paris.jpg");
+            CreateRestaurant("Francaise", "Crêperie Galette Cafe", "Crêperie Galette Cafe.jpg");
+
+            CreateRestaurant("Indien", "Bollynan", "Bollynan.jpg");
+            CreateRestaurant("Indien", "Aarapana restaurant", "Aarapana restaurant.jpg");
+            CreateRestaurant("Indien", "Safran", "Safran.jpg");
+            CreateRestaurant("Indien", "Eat & Cool", "Eat & Cool.jpg");
+
+            CreateRestaurant("Libanais", "Taboulé Paris", "Taboulé Paris.jpg");
+            CreateRestaurant("Libanais", "Chez le Libanais", "Chez le Libanais.jpg");
+            CreateRestaurant("Libanais", "Le Cèdre", "Le Cèdre.jpg");
+            CreateRestaurant("Libanais", "Noura", "Noura.jpg");
+            CreateRestaurant("Libanais", "Zaatar Libanais", "Zaatar Libanais.jpg");
+            CreateRestaurant("Libanais", "Big Falafel", "Big Falafel.jpg");
+            CreateRestaurant("Libanais", "Marché Libanais", "Marché Libanais.jpg");
+            CreateRestaurant("Libanais", "King Falafel Palace", "King Falafel Palace.jpg");
+            CreateRestaurant("Libanais", "O Beyrouth", "O Beyrouth.jpg");
+            CreateRestaurant("Libanais", "Shawarma Lovers", "Shawarma Lovers.jpg");
+            CreateRestaurant("Libanais", "Topoly", "Topoly.jpg");
+
+            CreateRestaurant("Pizza", "Five Pizza Original", "Five Pizza Original.jpg");
+            CreateRestaurant("Pizza", "5PIZZ", "5PIZZ.jpg");
+            CreateRestaurant("Pizza", "Chez Alfredo", "Chez Alfredo.jpg");
+            CreateRestaurant("Pizza", "Mulberry Street", "Mulberry Street.jpg");
+            CreateRestaurant("Pizza", "Pizza La Fayette", "Pizza La Fayette.jpg");
+            CreateRestaurant("Pizza", "Pizza Rustica", "Pizza Rustica.jpg");
+            CreateRestaurant("Pizza", "César Montorgueil", "César Montorgueil.jpg");
+            CreateRestaurant("Pizza", "Amala", "Amala.jpg");
+            CreateRestaurant("Pizza", "Falstaff", "Falstaff.jpg");
+            CreateRestaurant("Pizza", "Palazzo di Pasta", "Palazzo di Pasta.jpg");
+            CreateRestaurant("Pizza", "Pizza Presto", "Pizza Presto.jpg");
+            CreateRestaurant("Pizza", "Chez Aldo", "Chez Aldo.jpg");
+            CreateRestaurant("Pizza", "Del Arte", "Del Arte.jpg");
+            CreateRestaurant("Pizza", "Italian Trattoria", "Italian Trattoria.jpg");
 
             db.SaveChanges();
+        }
+
+        private Restaurant CreateRestaurant(string typeCuisine, string nom, string photo)
+        {
+            var idTypeCuisines = db.TypeCuisines.First(tc => tc.Nom == typeCuisine).IdTypeCuisine;
+            var person = new Bogus.Person("fr");
+
+            var restaurant = new Restaurant()
+            {
+                Nom = nom,
+                IdTypeCuisine = idTypeCuisines,
+                Description = faker.Lorem.Paragraph(),
+                Budget = faker.Random.Int(3, 15),
+                Adresse = person.Address.Street,
+                Telephone = faker.Random.Replace("01########"),
+                Mobile = faker.Random.Replace("06########"),
+                Email = person.Email,
+                CodePostal = person.Address.ZipCode,
+                Ville = person.Address.City,
+                Login = person.UserName,
+                Password = faker.Internet.Password()
+
+            };
+
+            restaurant.Photos.Add(new Photo() { Nom = photo });
+            db.Restaurants.Add(restaurant);
+            logs.Add("Ajout restaurant : " + restaurant.Nom);
+
+            return restaurant;
         }
 
         private void CreateProduits(int amount)

@@ -14,27 +14,46 @@
 </ul>
 <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-        <div class="list-group">
+
+        <div class="row row-cols-md-3">
             @foreach (var item in Model.Restaurants)
             {
-                <a href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    @item.Nom
-                    <span class="badge badge-primary badge-pill">@item.Budget €</span>
-                </a>
+                <div class="col mb-4">
+                    <div class="card">
+                        <a href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })">
+                            <img src="@(Url.Content("~/Ressources/Images/Restaurants/" + item.Photos.First()?.Nom ?? "Default.jpg"))" class="card-img-top" alt="...">
+                        </a>
+
+                        <div class="card-body">
+                            <a class="text-decoration-none text-reset" href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })">
+                                <h5 class="card-title">@item.Nom</h5>
+                            </a>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                <a href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })" class="btn btn-primary">
+                                    Commander
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
             }
         </div>
+
     </div>
     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
         @foreach (var item in Model.TypeCuisines)
         {
-        <a href="@Url.Action("ParSpecialitee", "Restaurants", new { idTypeCuisine = item.IdTypeCuisine })" class="list-group-item list-group-item-action d-flex flex-column">
-            <img class="homeTypeCuisine" src="@Url.Content("~/Ressources/Images/TypeCuisine/")@item.Photo.Nom" />
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <h4>@item.Nom</h4>
-                <span class="badge badge-primary badge-pill">@item.Restaurants.Count Restaurants</span>
-            </div>
-            
-        </a>
+            <a href="@Url.Action("ParSpecialitee", "Restaurants", new { idTypeCuisine = item.IdTypeCuisine })" class="list-group-item list-group-item-action d-flex flex-column">
+                <img class="homeTypeCuisine" src="@Url.Content("~/Ressources/Images/TypeCuisine/")@item.Photo.Nom" />
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <h4>@item.Nom</h4>
+                    <span class="badge badge-primary badge-pill">@item.Restaurants.Count Restaurants</span>
+                </div>
+
+            </a>
 
         }
     </div>

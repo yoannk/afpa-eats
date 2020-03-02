@@ -26,7 +26,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light">
+    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light bg-navbar border-bottom box-shadow">
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">
             <img src="@Url.Content("~/Ressources/Images/Site/Logo_Afpa.jpg")" width="30" height="30" alt="logo">
             AfpaEats
@@ -79,12 +79,16 @@
 
 
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mon application ASP.NET</p>
-        </footer>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
+
+    <footer class="border-top footer text-muted bg-footer">
+        <div class="container">
+            &copy; @DateTime.Now.Year - AFPA Eats
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
