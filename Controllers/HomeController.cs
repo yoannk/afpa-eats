@@ -11,12 +11,13 @@ namespace AfpEat.Controllers
     {
         private AfpEatEntities db = new AfpEatEntities();
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             HomeViewModel homeViewModel = new HomeViewModel();
 
             homeViewModel.Restaurants = db.Restaurants.ToList();
             homeViewModel.TypeCuisines = db.TypeCuisines.ToList();
+            homeViewModel.CurrentPage = page;
 
             return View(homeViewModel);
         }
