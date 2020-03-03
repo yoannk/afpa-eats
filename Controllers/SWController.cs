@@ -17,57 +17,36 @@ namespace AfpEat.Controllers
         public JsonResult AddProduit(int idProduit, string idSession)
         {
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
-            int quantiteTotale = 0;
-            int quantiteProduit = 0;
-            decimal prixTotal = 0;
-            string prixTotalFormat = "";
 
-            List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[idSession] ?? new List<ProduitPanier>();
-
-            if (sessionUtilisateur != null)
+            if (sessionUtilisateur == null)
             {
-                Produit produit = db.Produits.First(p => p.IdProduit == idProduit);
-
-                ProduitPanier produitPanier = panier.FirstOrDefault(p => p.IdProduit == produit.IdProduit);
-
-                if (produitPanier != null)
-                {
-                    produitPanier.Quantite++;
-                }
-                else
-                {
-                    produitPanier = new ProduitPanier()
-                    {
-                        IdProduit = produit.IdProduit,
-                        IdRestaurant = produit.IdRestaurant,
-                        Nom = produit.Nom,
-                        Description = produit.Description,
-                        Quantite = 1,
-                        Prix = produit.Prix,
-                        Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
-                    };
-
-                    panier.Add(produitPanier);
-                }
-
-                quantiteProduit = produitPanier.Quantite;
-                HttpContext.Application[idSession] = panier;
+                return Json(0, JsonRequestBehavior.AllowGet);
             }
 
-            foreach (var item in panier)
-            {
-                quantiteTotale += item.Quantite;
-                prixTotal += item.Prix * item.Quantite;
-            }
+            PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
+            // TODO check if produit exists and stock > 1
+            Produit produit = db.Produits.Find(idProduit);
 
-            prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prixTotal);
+            var produitPanier = new ProduitPanier()
+            {
+                IdProduit = produit.IdProduit,
+                IdRestaurant = produit.IdRestaurant,
+                Nom = produit.Nom,
+                Description = produit.Description,
+                Quantite = 1,
+                Prix = produit.Prix,
+                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
+            };
+
+            int quantiteProduit = panier.AddItem(produitPanier);
+            HttpContext.Application[idSession] = panier;
 
             var data = new
             {
                 quantiteProduit,
-                quantiteTotale,
-                prixTotal,
-                prixTotalFormat
+                quantiteTotale = panier.QuantiteTotale,
+                prixTotal = panier.Montant,
+                prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -77,51 +56,35 @@ namespace AfpEat.Controllers
         public JsonResult RemoveProduit(int idProduit, string idSession)
         {
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
-            int quantiteTotale = 0;
-            int quantiteProduit = 0;
-            decimal prixTotal = 0;
-            string prixTotalFormat = "";
 
-            List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[idSession] ?? new List<ProduitPanier>();
-
-            if (sessionUtilisateur != null)
+            if (sessionUtilisateur == null)
             {
-                Produit produit = db.Produits.First(p => p.IdProduit == idProduit);
-
-                ProduitPanier produitPanier = panier.FirstOrDefault(p => p.IdProduit == produit.IdProduit);
-
-                if (produitPanier != null)
-                {
-                    if (produitPanier.Quantite > 1)
-                    {
-                        produitPanier.Quantite--;
-                        quantiteProduit = produitPanier.Quantite;
-                    }
-                    else
-                    {
-                        panier.Remove(produitPanier);
-                        quantiteProduit = 0;
-                    }
-                }
-
-                
-                HttpContext.Application[idSession] = panier;
+                return Json(0, JsonRequestBehavior.AllowGet);
             }
 
-            foreach (var item in panier)
-            {
-                quantiteTotale += item.Quantite;
-                prixTotal += item.Prix * item.Quantite;
-            }
+            PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
+            Produit produit = db.Produits.Find(idProduit);
 
-            prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prixTotal);
+            var produitPanier = new ProduitPanier()
+            {
+                IdProduit = produit.IdProduit,
+                IdRestaurant = produit.IdRestaurant,
+                Nom = produit.Nom,
+                Description = produit.Description,
+                Quantite = 1,
+                Prix = produit.Prix,
+                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
+            };
+
+            int quantiteProduit = panier.RemoveItem(produitPanier);
+            HttpContext.Application[idSession] = panier;
 
             var data = new
             {
                 quantiteProduit,
-                quantiteTotale,
-                prixTotal,
-                prixTotalFormat
+                quantiteTotale = panier.QuantiteTotale,
+                prixTotal = panier.Montant,
+                prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);

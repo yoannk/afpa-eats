@@ -7,9 +7,9 @@ namespace AfpEat.Models
 {
     public class HomeViewModel
     {
-        public List<Restaurant> Restaurants { get; set; }
+        public List<Restaurant> PaginatedRestaurants { get; set; }
         public List<TypeCuisine> TypeCuisines { get; set; }
-        public int CurrentPage { get; set; }
-        public int itemsPerPage = 10;
+        public int PageIndex { get; set; }
+        public int TotalPages { get; set; }
     }
 }

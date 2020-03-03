@@ -1,4 +1,5 @@
 ﻿using AfpEat.Models;
+using AfpEat.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,28 @@ namespace AfpEat.Controllers
         public ActionResult Index(int page = 1)
         {
             HomeViewModel homeViewModel = new HomeViewModel();
+            var restaurants = db.Restaurants.OrderBy(r => r.Budget);
+            int pageSize = Constants.RestaurantsParPage;
 
-            homeViewModel.Restaurants = db.Restaurants.ToList();
+            int totalPages = (int)Math.Ceiling(restaurants.Count() / (double)pageSize);
+
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+
             homeViewModel.TypeCuisines = db.TypeCuisines.ToList();
-            homeViewModel.CurrentPage = page;
+            homeViewModel.PaginatedRestaurants = restaurants.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            homeViewModel.PageIndex = page;
+            homeViewModel.TotalPages = totalPages;
+
 
             return View(homeViewModel);
         }

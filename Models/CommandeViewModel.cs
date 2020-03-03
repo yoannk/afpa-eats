@@ -7,7 +7,7 @@ namespace AfpEat.Models
 {
     public class CommandeViewModel
     {
-        public List<Produit> produitsDisponible { get; set; }
-        public List<ProduitPanier> Panier { get; set; }
+        public List<Produit> ProduitsDisponible { get; set; }
+        public PanierModel Panier { get; set; }
     }
 }

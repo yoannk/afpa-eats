@@ -26,11 +26,11 @@ namespace AfpEat.Controllers
         public ActionResult Commande()
         {
             List<Produit> produits = db.Produits.Include(p => p.Categorie).Include(p => p.Restaurant).Where(p => p.Quantite > 0).ToList();
-            List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[Session.SessionID] ?? new List<ProduitPanier>();
+            PanierModel panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
 
             CommandeViewModel commandeViewModel = new CommandeViewModel()
             {
-                produitsDisponible = produits,
+                ProduitsDisponible = produits,
                 Panier = panier
             };
 

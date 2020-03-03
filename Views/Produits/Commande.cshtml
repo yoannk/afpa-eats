@@ -23,10 +23,10 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.produitsDisponible)
+    @foreach (var item in Model.ProduitsDisponible)
     {
 
-        var produit = Model.Panier.FirstOrDefault(p => p.IdProduit == item.IdProduit);
+        var produit = Model.Panier.FirstOrDefault(p => p.GetIdProduit() == item.IdProduit);
         int quantite = produit?.Quantite ?? 0;
 
         string prixFormat = String.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", item.Prix);
