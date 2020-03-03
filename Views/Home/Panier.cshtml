@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AfpEat.Models.ProduitPanier>
+﻿@model IEnumerable<AfpEat.Models.ItemPanier>
 
 @{
     ViewBag.Title = "Panier";
@@ -12,9 +12,9 @@
 </p>
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.IdProduit)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Nom)
         </th>
@@ -38,9 +38,9 @@
         foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.IdProduit)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nom)
                 </td>
@@ -57,9 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Photo)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.IdProduit }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.IdProduit }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.IdProduit })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.GetIdProduit() }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.GetIdProduit() }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.GetIdProduit() })
                 </td>
             </tr>
         }

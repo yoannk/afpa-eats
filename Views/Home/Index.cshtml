@@ -45,23 +45,32 @@
         <nav>
             <ul class="pagination justify-content-center">
 
-                <li class="page-item@(Model.HasPrevious() ? "" : " disabled")">
-                    <a class="page-link" href="@Url.Action("Index", "Home", new { Page = Model.PageIndex - 1 })">Précédent</a>
-                </li>
+                @if (@Model.HasPrevious())
+                {
+                    <li class="page-item">
+                        <a class="page-link text-reset" href="@Url.Action("Index", "Home", new { Page = Model.PageIndex - 1 })">Précédent</a>
+                    </li>
+                }
+
 
                 @for (int i = Model.PageIndex - 3; i <= Model.PageIndex + 3; i++)
                 {
                     if (i > 0 && i <= Model.TotalPages)
                     {
                         <li class="page-item@(Model.PageIndex == i ? " active" : "")">
-                            <a class="page-link" href="@Url.Action("Index", "Home", new { Page = i })">@i</a>
+                            <a class="page-link text-reset" href="@Url.Action("Index", "Home", new { Page = i })">@i</a>
                         </li>
                     }
                 }
 
-                <li class="page-item@(Model.HasNext() ? "" : " disabled")">
-                    <a class="page-link" href="@Url.Action("Index", "Home", new { Page = Model.PageIndex + 1 })">Suivant</a>
-                </li>
+                @if (@Model.HasNext())
+                {
+                    <li class="page-item">
+                        <a class="page-link text-reset" href="@Url.Action("Index", "Home", new { Page = Model.PageIndex + 1 })">Suivant</a>
+                    </li>
+                }
+
+
             </ul>
         </nav>
 

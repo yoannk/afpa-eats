@@ -2,7 +2,7 @@
 
 @{
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    PanierModel panier = ( PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new  PanierModel();
+    PanierModel panier = ( PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
 }
 
 <!DOCTYPE html>

@@ -25,18 +25,14 @@ namespace AfpEat.Controllers
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
             // TODO check if produit exists and stock > 1
-            Produit produit = db.Produits.Find(idProduit);
+            // TODO return json avec message d'erreur
 
-            var produitPanier = new ProduitPanier()
+            ProduitPanier produitPanier = CreateProduitPanier(idProduit);
+
+            if (produitPanier == null)
             {
-                IdProduit = produit.IdProduit,
-                IdRestaurant = produit.IdRestaurant,
-                Nom = produit.Nom,
-                Description = produit.Description,
-                Quantite = 1,
-                Prix = produit.Prix,
-                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
-            };
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
 
             int quantiteProduit = panier.AddItem(produitPanier);
             HttpContext.Application[idSession] = panier;
@@ -46,7 +42,7 @@ namespace AfpEat.Controllers
                 quantiteProduit,
                 quantiteTotale = panier.QuantiteTotale,
                 prixTotal = panier.Montant,
-                prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
+                prixTotalFormat = string.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -63,18 +59,12 @@ namespace AfpEat.Controllers
             }
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
-            Produit produit = db.Produits.Find(idProduit);
+            ProduitPanier produitPanier = CreateProduitPanier(idProduit);
 
-            var produitPanier = new ProduitPanier()
+            if (produitPanier == null)
             {
-                IdProduit = produit.IdProduit,
-                IdRestaurant = produit.IdRestaurant,
-                Nom = produit.Nom,
-                Description = produit.Description,
-                Quantite = 1,
-                Prix = produit.Prix,
-                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
-            };
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
 
             int quantiteProduit = panier.RemoveItem(produitPanier);
             HttpContext.Application[idSession] = panier;
@@ -85,6 +75,53 @@ namespace AfpEat.Controllers
                 quantiteTotale = panier.QuantiteTotale,
                 prixTotal = panier.Montant,
                 prixTotalFormat = String.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AddMenu(int idMenu, List<int> idProduits, string idSession)
+        {
+            SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
+            PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
+
+            if (sessionUtilisateur == null)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+
+            Menu menu = db.Menus.Find(idMenu);
+
+            if (menu == null)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+
+            MenuPanier menuPanier = new MenuPanier();
+            menuPanier.IdMenu = idMenu;
+
+            foreach(int idProduit in idProduits)
+            {
+                ProduitPanier produitPanier = CreateProduitPanier(idProduit);
+
+                if (produitPanier != null)
+                {
+                    menuPanier.Produits.Add(produitPanier);
+                }
+
+                panier.Add(menuPanier);
+            }
+
+            //int quantiteProduit = panier.AddMenu(menuPanier);
+            int quantiteProduit = 0;
+            HttpContext.Application[idSession] = panier;
+
+            var data = new
+            {
+                quantiteProduit,
+                quantiteTotale = panier.QuantiteTotale,
+                prixTotal = panier.Montant,
+                prixTotalFormat = string.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)
             };
 
             return Json(data, JsonRequestBehavior.AllowGet);
@@ -124,10 +161,15 @@ namespace AfpEat.Controllers
             int idRestaurant = 0;
             decimal prixTotal = 0;
 
-            foreach (ProduitPanier produitPanier in panier)
+            foreach (ItemPanier itemPanier in panier)
             {
-                prixTotal += produitPanier.Prix * produitPanier.Quantite;
-                idRestaurant = produitPanier.IdRestaurant;
+                prixTotal += itemPanier.Prix * itemPanier.Quantite;
+                idRestaurant = itemPanier.IdRestaurant;
+
+                /*if (itemPanier is ProduitPanier produitPanier)
+                {
+                    
+                }*/
             }
 
             if (prixTotal > utilisateur.Solde)
@@ -182,6 +224,29 @@ namespace AfpEat.Controllers
             }
 
             return Json(new { error = 0, message = "Erreur de connexion" }, JsonRequestBehavior.AllowGet);
+        }
+
+        private ProduitPanier CreateProduitPanier(int idProduit)
+        {
+            Produit produit = db.Produits.Find(idProduit);
+
+            if (produit == null)
+            {
+                return null;
+            }
+
+            var produitPanier = new ProduitPanier()
+            {
+                IdProduit = produit.IdProduit,
+                IdRestaurant = produit.IdRestaurant,
+                Nom = produit.Nom,
+                Description = produit.Description,
+                Quantite = 1,
+                Prix = produit.Prix,
+                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
+            };
+
+            return produitPanier;
         }
     }
 }

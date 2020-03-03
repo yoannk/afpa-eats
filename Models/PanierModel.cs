@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AfpEat.Models
@@ -9,49 +10,69 @@ namespace AfpEat.Models
         public decimal Montant { get; private set; }
         public string PrixFormat { get; private set; }
 
-        public int AddItem(ItemPanier itemPanier)
+        public int AddItem(ItemPanier item)
         {
-            var itemInPanier = this.FirstOrDefault(i => i.GetIdProduit() == itemPanier.GetIdProduit());
+            var itemPanier = this.FirstOrDefault(i => i.GetIdProduit() == item.GetIdProduit());
+            int idItemPanier = 0;
 
-            if (itemInPanier != null)
+            if (item is ProduitPanier || item is ProduitComposePanier)
             {
-                itemInPanier.Quantite++;
+                idItemPanier = item.GetIdProduit();
+            }
+            else if(item is MenuPanier)
+            {
+                idItemPanier = item.GetIdMenu();
+            }
+
+            if (itemPanier != null)
+            {
+                itemPanier.Quantite++;
             }
             else
             {
-                this.Add(itemPanier);
+                this.Add(item);
             }
 
             QuantiteTotale++;
-            Montant += itemPanier.Prix;
+            Montant += item.Prix;
             PrixFormat = FormatPrix(Montant);
 
-            return itemInPanier == null ? 1 : itemInPanier.Quantite;
+            return itemPanier == null ? 1 : itemPanier.Quantite;
         }
 
-        public int RemoveItem(ItemPanier itemPanier)
+        public int RemoveItem(ItemPanier item)
         {
-            var itemInPanier = this.FirstOrDefault(i => i.GetIdProduit() == itemPanier.GetIdProduit());
+            var itemPanier = this.FirstOrDefault(i => i.GetIdProduit() == item.GetIdProduit());
+            int idItemPanier = 0;
 
-            if (itemInPanier == null)
+            if (item is ProduitPanier || item is ProduitComposePanier)
+            {
+                idItemPanier = item.GetIdProduit();
+            }
+            else if (item is MenuPanier)
+            {
+                idItemPanier = item.GetIdMenu();
+            }
+
+            if (itemPanier == null)
             {
                 return 0;
             }
-            else if (itemInPanier.Quantite == 1)
+            else if (itemPanier.Quantite == 1)
             {
-                itemInPanier.Quantite--;
-                this.Remove(itemInPanier);
+                itemPanier.Quantite--;
+                this.Remove(itemPanier);
             }
             else
             {
-                itemInPanier.Quantite--;
+                itemPanier.Quantite--;
             }
 
             QuantiteTotale--;
-            Montant -= itemPanier.Prix;
+            Montant -= item.Prix;
             PrixFormat = FormatPrix(Montant);
 
-            return itemInPanier.Quantite;
+            return itemPanier.Quantite;
         }
 
         private string FormatPrix(decimal prix)
