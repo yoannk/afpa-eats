@@ -31,8 +31,8 @@ namespace AfpEat.Controllers
             CreateTypeCuisinePhotos();
             CreateTypeCuisine();
             CreateCategorie();
-            CreateRestaurants(Convert.ToInt32(form["restaurantsQte"]));
-            CreateProduits(Convert.ToInt32(form["produitsQte"]));
+            CreateRestaurants();
+            CreateProduits();
 
             return View(logs);
         }
@@ -115,12 +115,14 @@ namespace AfpEat.Controllers
             db.Categories.Add(new Categorie() { Nom = "Boisson", Statut = true });
             db.Categories.Add(new Categorie() { Nom = "Pâtes", Statut = true });
             db.Categories.Add(new Categorie() { Nom = "Panini", Statut = true });
+            db.Categories.Add(new Categorie() { Nom = "Pizza", Statut = true });
+            db.Categories.Add(new Categorie() { Nom = "Sandwich", Statut = true }); 
             logs.Add("Ajout de 7 catégories");
 
             db.SaveChanges();
         }
 
-        private void CreateRestaurants(int amount)
+        private void CreateRestaurants()
         {
             CreateRestaurant("Asiatique", "Pokawa", "Pokawa.jpg");
             CreateRestaurant("Asiatique", "Sushi Shop", "Sushi Shop.jpg");
@@ -134,7 +136,6 @@ namespace AfpEat.Controllers
 
             CreateRestaurant("Brasserie", "Shake it Easy", "Shake it Easy.jpg");
 
-            CreateRestaurant("Fastfood", "KFC", "KFC.jpg");
             CreateRestaurant("Fastfood", "Cheezer", "Cheezer.jpg");
             CreateRestaurant("Fastfood", "Nabab Kebab", "Nabab Kebab.jpg");
             CreateRestaurant("Fastfood", "Burger & Fries", "Burger & Fries.jpg");
@@ -187,7 +188,7 @@ namespace AfpEat.Controllers
         private Restaurant CreateRestaurant(string typeCuisine, string nom, string photo)
         {
             var idTypeCuisines = db.TypeCuisines.First(tc => tc.Nom == typeCuisine).IdTypeCuisine;
-            var person = new Bogus.Person("fr");
+            var person = new Person("fr");
 
             var restaurant = new Restaurant()
             {
@@ -213,28 +214,140 @@ namespace AfpEat.Controllers
             return restaurant;
         }
 
-        private void CreateProduits(int amount)
+        private void CreateProduits()
         {
-            var idRestaurants = db.Restaurants.Select(r => r.IdRestaurant).ToList();
-            var idCategories = db.Categories.Select(r => r.IdCategorie).ToList();
-
-            for (int i = 0; i < amount; i++)
-            {
-                var produit = new Produit()
-                {
-                    IdRestaurant = faker.PickRandom(idRestaurants),
-                    IdCategorie = faker.PickRandom(idCategories),
-                    Nom = faker.Lorem.Sentence(2, 5).TrimEnd('.'),
-                    Prix = decimal.Round(faker.Random.Decimal(2, 11), 1),
-                    Description = faker.Lorem.Sentence().TrimEnd('.'),
-                    Quantite = faker.Random.ArrayElement(new[] { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 })
-                };
-
-                db.Produits.Add(produit);
-                logs.Add($"Ajout produit #{i} {produit.Nom} : {produit.Description} - {produit.Prix} €");
-            }
+            AddProduitsAsiatique("Pokawa", "Sushi Shop", "SHAKA Poke");
+            AddProduitsBoulangerie("La Mie Câline", "Maison Kayser", "Boulangerie Beaubourg", "Pomme de Pain", "Boulangerie artisanale Zerzour");
 
             db.SaveChanges();
+        }
+
+        private void AddProduitsBoulangerie(params string[] restaurants)
+        {
+            foreach (var restaurant in restaurants)
+            {
+                CreateProduit(restaurant, "Pizza", "Pizza aux chèvres", "Coulis de tomate, mozzarella et chèvre.", 5.20m);
+                CreateProduit(restaurant, "Pizza", "Pizza lardons champignons", "Coulis de tomate, lardons et champignons.", 5.20m);
+
+                CreateProduit(restaurant, "Salade", "Salade Chic Saumon", "Salade composé et mâche , lentilles corail, chou rouge, saumon fumé ,radis.", 8.70m);
+                CreateProduit(restaurant, "Salade", "Salade jambon Serrano , rigatori et féta", "Salade composée , mache , rigatori au deux poivrons , tomates cerise , jambon serrano , féta et ciboulette", 8.70m);
+                CreateProduit(restaurant, "Salade", "Salade poulet , trio de carottes et oeuf poché", "Salade composée , mache , trio de carottes , tomate cerise , oeuf poché , medaillon de poulet roti , graine de courge", 8.70m);
+
+                CreateProduit(restaurant, "Sandwich", "Graine de chic poulet et pesto rosso", "pain couronne et graines bio , poulet roti , pesto rosso , mozza , roquette", 8.70m);
+                CreateProduit(restaurant, "Sandwich", "Graine de chic Guacamole et Galettes de légumes de Soleil. 100% Vegan", "Pain couronne et graines de pavot, galettes de légumes confits, guacamole, tomate cerise, pointe de verdure.", 8.70m);
+                CreateProduit(restaurant, "Sandwich", "Dolce vita", "Déjeunette la mie câline, pesto vert, médaillons de poulet, tomates confite, pécorino et roquette.", 8.70m);
+                CreateProduit(restaurant, "Sandwich", "Coppa Tomme de Brebis", "Déjeunette baguette la véritable, Tomme de Brebis, Coppa, beurre léger, pointe de verdure.", 8.70m);
+
+                CreateProduit(restaurant, "Sandwich", "Sandwich jambon beurre", "Déjeunette baguette, jambon blanc et beurre léger.", 5.05m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich jambon emmental", "Déjeunette baguette, jambon blanc, emmental et beurre léger.", 5.05m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich poulet sauce moutarde", "Déjeunette baguette, émincés de poulet, sauce mayonnaise à la moutarde à l'ancienne et salade.", 5.05m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich rosette cornichons", "Déjeunette baguette, beurre léger, rosette et cornichons.", 5.05m);
+                CreateProduit(restaurant, "Sandwich", "Ciabatta poulet curry", "Pain ciabatta, émincés de poulet, tomate et sauce curry.", 5.05m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich jambon complet", "Déjeunette baguette, jambon blanc, tomates, œuf, emmental, mayonnaise et salade.", 6.50m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich poulet complet", "Déjeunette baguette, émincés de poulet, tomates, œuf, emmental, mayonnaise et salade.", 6.50m);
+                CreateProduit(restaurant, "Sandwich", "Sandwich thon complet", "Déjeunette baguette, thon, tomates, œuf, mayonnaise et salade.", 6.50m);
+                CreateProduit(restaurant, "Sandwich", "Moelleux poulet curry", "Déjeunette moelleuse, émincés de poulet, poivrons, sauce curry, salade", 6.30m);
+                CreateProduit(restaurant, "Sandwich", "Moelleux barbecue cheddar", "Une déjeunette pain de mie moelleuse garnie d'un effiloché de porc (viande de porc française marinée à la sauce barbecue, cuite à base température) et d'une sauce barbecue, le tout recouvert de cheddar.", 6.30m);
+
+                CreateProduit(restaurant, "Panini", "Panini poulet Barbecue", "Pain nature, sauce barbecue, émincés de poulet, oignons et cheddar.", 6.50m);
+                CreateProduit(restaurant, "Panini", "Panini Savoyard", "Pain nature, fromage à raclette et jambon blanc fumé.", 6.50m);
+                CreateProduit(restaurant, "Panini", "Panini Mexicain", "Pain aux poivrons, sauce épicée mexicaine, poulet mariné, cheddar.", 6.50m);
+                CreateProduit(restaurant, "Panini", "Panini Italien", "Pain aux herbes, sauce tomate, jambon blanc fumé, mozzarella, tomate.", 6.50m);
+                CreateProduit(restaurant, "Panini", "Panini 3 fromages", "Pain nature, sauce fromage frais, mozzarella, cheddar et bleu.", 6.50m);
+
+                CreateProduit(restaurant, "Dessert", "Cookie Nutella", "", 2.80m);
+                CreateProduit(restaurant, "Dessert", "Super cookie pépites chocolat noir", "", 2.80m);
+                CreateProduit(restaurant, "Dessert", "Super cookie chocolat blanc", "", 2.80m);
+                CreateProduit(restaurant, "Dessert", "Super cookie 3 chocolats", "", 2.80m);
+                CreateProduit(restaurant, "Dessert", "Muffin chocolat caramel", "", 3.00m);
+                CreateProduit(restaurant, "Dessert", "Donuts Chocolat", "", 2.30m);
+                CreateProduit(restaurant, "Dessert", "Tartelette citron", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Tartelette citron meringuée", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Tartelette pomme", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Gâteau basque", "", 3.50m);
+                CreateProduit(restaurant, "Dessert", "Flan nature", "", 3.00m);
+                CreateProduit(restaurant, "Dessert", "Éclair chocolat", "", 3.40m);
+                CreateProduit(restaurant, "Dessert", "Éclair café", "", 3.40m);
+                CreateProduit(restaurant, "Dessert", "Éclair Vanille", "", 3.40m);
+                CreateProduit(restaurant, "Dessert", "Cheese cake cookies", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Macaron caramel", "", 3.80m);
+                CreateProduit(restaurant, "Dessert", "Macaron chocolat", "", 3.80m);
+                CreateProduit(restaurant, "Dessert", "Tartelette poire amande", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Brownies", "", 2.80m);
+                CreateProduit(restaurant, "Dessert", "Framboisier", "", 3.80m);
+                CreateProduit(restaurant, "Dessert", "Cheese cake Spéculoos", "", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Éclair Praliné", "Une pâte à choux garnie d'une onctueuse mousse pralinée, recouverte d'un glaçage et d'éclats de noisettes caramélisées.", 3.70m);
+                CreateProduit(restaurant, "Dessert", "Moelleux au chocolat", "Un moelleux au chocolat composé d'oeufs, chocolat noir, beurre, sucre, farine, et c'est tout! A déguster chaud.", 3.40m);
+                CreateProduit(restaurant, "Dessert", "Cup de fruits de saison", "Fruits selon la saison", 3.80m);
+
+
+            }
+        }
+
+        private void AddProduitsAsiatique(params string[] restaurants)
+        {
+            foreach (var restaurant in restaurants)
+            {
+                CreateProduit(restaurant, "Entrée", "Avocado toast", "Toast de pain grillé, avocat, grenades et graines bio et une pointe de sauce tropicale ! Que du BONHEUR", 7.90m);
+                CreateProduit(restaurant, "Entrée", "Soupawa Maison", "Carottes, lait de coco, oignons rouges, une pointe de citron vert et une légère touche de coriandre ! UN VRAI DÉLICE !", 4.90m);
+                CreateProduit(restaurant, "Entrée", "Falafels Bio", "Super falafels de pois chiche bio, vegan et sans gluten ! Pourquoi se priver ?", 5.90m);
+                CreateProduit(restaurant, "Entrée", "Salmon Love Avocado", "Un demi avocat avec du saumon frais et parsemé de grenade. Il est accompagné de notre super sauce tropicale maison et une touche de graines de sésame.", 4.90m);
+                CreateProduit(restaurant, "Entrée", "Salade d'algues wakamé", "Faites un plein de vitamines ! Le wakamé est un très bon allié pour booster votre système immunitaire pour ce début d'hiver.", 4.90m);
+                CreateProduit(restaurant, "Entrée", "Salade d'edamame", "Fèves de soja fraîches aux bienfaits extraordinaires. Riche en protéine de qualité, en fibre et vitamines B.", 3.90m);
+                CreateProduit(restaurant, "Entrée", "Soupawa Maison", "Carottes, lait de coco, oignons rouges, une pointe de citron vert et une légère touche de coriandre ! UN VRAI DÉLICE !", 4.90m);
+
+                CreateProduit(restaurant, "Plat", "Chirashi Hawaïen", "Base au choix, saumon mariné, avocat, mangue fraiche, cébette thaï et graines de sésame.", 12.90m);
+                CreateProduit(restaurant, "Plat", "Poké Super Protéine", "Base au choix, saumon + thon rouge mariné, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge, graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Saumon", "Base au choix, saumon d'Ecosse, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge, graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Thon Rouge", "Base au choix, thon rouge mariné, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge, graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Crevettes", "Base au choix, crevette, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge et graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Daurade Royale", "Base au choix, daurade royale, mangue ou ananas, avocat, radis, concombre, carotte, edamame, chou rouge et graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Poulet rôti teriyaki", "Base au choix, poulet rôti mariné à la sauce teriyaki, fruit au choix, avocat, carotte, radis, concombre, edamame, chou rouge et graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Falafels Bio", "Base au choix, falafels Bio, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge, graines de sésame.", 10.90m);
+                CreateProduit(restaurant, "Plat", "Poké Tofu fumé Bio", "Base au choix, tofu fumé Bio, mangue ou ananas, avocat, carotte, radis, concombre, edamame, chou rouge, graines de sésame.", 10.90m);
+
+                CreateProduit(restaurant, "Dessert", "Cheesecake", "Cheesecake et son coulis de framboises. Miam Miam, une touche onctueuse et sucrée pour finir en beauté.", 4.90m);
+                CreateProduit(restaurant, "Dessert", "Fondant au chocolat", "Chocolate lovers… Ce fondant est fait pour vous ! Et je n’ai qu’une chose à vous dire : REGALEZ-VOUS bien !", 4.90m);
+                CreateProduit(restaurant, "Dessert", "Pudding Coco aux Perles de Chia Bio", "Cheesecake et son coulis de framboises fraîches. Miam Miam, une touche onctueuse et sucrée pour finir en beauté.", 4.90m);
+                CreateProduit(restaurant, "Dessert", "Le Granola Bowl Mangue Bio", "Fromage blanc allégé, mangue fraiche et muesli énergétique.", 4.90m);
+                CreateProduit(restaurant, "Dessert", "Excellente mangue fraîchement coupée", "Salade de mangue faite avec amour.", 4.90m);
+                CreateProduit(restaurant, "Dessert", "Ananas plein de Soleil", "Salade d'ananas fraîchement coupés et gorgée de soleil !", 3.90m);
+                CreateProduit(restaurant, "Dessert", "Cookie BIO Chocolat au Lait", "Les pépites de chocolat au lait fondent délicieusement en bouche. Une valeur sûre !", 3.50m);
+                CreateProduit(restaurant, "Dessert", "Cookie BIO Caramel d'Isigny au Sel de Guérande", "Un cookie à la fois craquant et fondant. Les pépites de caramel se mêlent au côté iodé du sel de Guérande... à se damner.", 3.50m);
+
+                CreateProduit(restaurant, "Boisson", "Lemonaid Bio Citron Vert", "Un vrai soda BIO naturel et rafraichissant avec du citron vert et une pointe de sucre de canne ! Le rêve non ? (33cl)", 3.90m);
+                CreateProduit(restaurant, "Boisson", "Lemonaid Bio Fruit de La Passion", "Étonnant, addictif et délicieux. Que du rêve dans cette boisson fruitée ! A déguster au bord de la piscine ou sur une plage... (33 cl)", 3.90m);
+                CreateProduit(restaurant, "Boisson", "Lemonaid Bio Orange Sanguine", "Beaucoup d’orange sanguine accompagnée de pamplemousse, d’orange, de citron avec un soupçon de cerise pour sublimer le goût ! Vous n’en reviendrez pas ! (33 cl)", 3.90m);
+                CreateProduit(restaurant, "Boisson", "Thé glacé Wandertea Ice Fruits", "Réveillez votre énergie naturelle et désaltérez-vous avec de délicieux thé glacé.", 3.90m);
+                CreateProduit(restaurant, "Boisson", "Citronnade maison", "Découvrez notre super citronnade maison infusée à la menthe avec une pointe de gingembre. Pourquoi faire compliqué quand on peu faire bon ? (35 cl)", 3.90m);
+                CreateProduit(restaurant, "Boisson", "Evian", "On vous a déjà dit qu'il fallait boire 2 litres d'eau par jours ? (50 cl)", 2.90m);
+                CreateProduit(restaurant, "Boisson", "San Pellegrino", "Une eau gazeuse à boire tous les jours, par tous. (50 cl)", 2.90m);
+                CreateProduit(restaurant, "Boisson", "Coca-Cola", "Notre ami américain, original et rafraichissant depuis 1886 ! (33 cl)", 2.90m);
+                CreateProduit(restaurant, "Boisson", "Coca-Cola zéro sucre", "Une subtile combinaison d’ingrédients restituant le goût de Coca-Cola avec zéro sucres, de quoi vous faire plaisir sans vous priver... (33 cl)", 2.90m);
+
+            }
+        }
+
+        private Produit CreateProduit(string restaurant, string categorie, string nom, string description, decimal prix)
+        {
+            var idRestaurant = db.Restaurants.First(r => r.Nom == restaurant).IdRestaurant;
+            var idCategorie = db.Categories.First(c => c.Nom == categorie).IdCategorie;
+
+            var produit = new Produit()
+            {
+                IdRestaurant = idRestaurant,
+                IdCategorie = idCategorie,
+                Nom = nom,
+                Prix = prix,
+                Description = description,
+                Quantite = faker.Random.ArrayElement(new[] { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 })
+            };
+
+            produit.Photos.Add(new Photo() { Nom = nom + ".jpg" });
+            db.Produits.Add(produit);
+            logs.Add($"Ajout produit : {produit.Nom} - {produit.Prix} €");
+
+            return produit;
         }
 
     }
