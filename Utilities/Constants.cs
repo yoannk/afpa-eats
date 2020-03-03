@@ -7,6 +7,6 @@ namespace AfpEat.Utilities
 {
     public class Constants
     {
-        public const int RestaurantsParPage = 10;
+        public const int RestaurantsParPage = 9;
     }
 }
