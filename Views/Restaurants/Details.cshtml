@@ -35,7 +35,7 @@
             {
                 <div class="col mb-4">
 
-                    @{ 
+                    @{
                         var itemInPanier = Model.Panier.FirstOrDefault(p => p.GetIdProduit() == produit.IdProduit);
 
                         var jsonProduit = Newtonsoft.Json.JsonConvert.SerializeObject(new
@@ -89,9 +89,9 @@
 
             <div class="modal-footer justify-content-between">
                 <div>
-                    <button id="modal-add-qte" class="btn btn-light m-1"><i class="fa fa-plus"></i></button>
-                    <span id="modal-qte-initiale" class="modal-qte-commande">1</span>
                     <button id="modal-remove-qte" class="btn btn-light m-1"><i class="fa fa-minus"></i></button>
+                    <span id="modal-qte-initiale" class="modal-qte-commande">1</span>
+                    <button id="modal-add-qte" class="btn btn-light m-1"><i class="fa fa-plus"></i></button>
                 </div>
                 <button type="button" id="addToCart" class="btn btn-principal" style="width: 380px;">
                     <div class="d-flex justify-content-between">
@@ -160,7 +160,7 @@
                 });
             });
 
-            let formatPrix = prix => new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"}).format(prix) 
+            let formatPrix = prix => new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"}).format(prix)
 
         });
     </script>
