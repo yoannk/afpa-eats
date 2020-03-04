@@ -10,7 +10,7 @@
     <div class="jumbotron jumbotron-fluid bg-dark">
 
         <div class="jumbotron-background">
-            <img src="@Url.Content("~/Ressources/Images/Restaurants/" + (Model.Restaurant.Photos.First()?.Nom ?? "DefaultRestaurant.jpg"))" class="blur ">
+            <img src="@Url.Content("~/Ressources/Images/Restaurants/" + Model.Restaurant.Photos.First().Nom)" class="blur ">
         </div>
 
         <div class="container text-white">
@@ -21,8 +21,6 @@
             <p>@Model.Restaurant.Adresse @Model.Restaurant.CodePostal @Model.Restaurant.Ville</p>
 
         </div>
-        <!-- /.container -->
-
 
     </div>
 }
@@ -58,8 +56,8 @@
                                 <img src="@Url.Content("~/Ressources/Images/Produits/" + produit.Photos.First().Nom)" class="card-img">
                             </div>
                             <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title overflow-hidden">@produit.Nom</h5>
+                                <div class="card-body overflow-hidden">
+                                    <h5 class="card-title">@produit.Nom</h5>
                                     <p class="card-text">@produit.Description</p>
                                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                 </div>
@@ -74,24 +72,33 @@
 </div>
 
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-produit" role="document">
 
         <div class="modal-content">
 
             <div class="modal-body mb-0 p-0">
                 <img class="embed-responsive embed-responsive-16by9 z-depth-1-half" id="modal-img" src="#" />
-                <div>
-                    <h3></h3>
+                <div class="p-3">
+                    <h2 id="modal-nom"></h2>
+                    <p class="py-4" id="modal-description"></p>
+                    <p class="text-muted small">Si vous souffrez d'allergies alimentaires ou si vous suivez un régime alimentaire spécifique veuillez en aviser directement le restaurant avant de passer votre commande.</p>
                 </div>
             </div>
 
 
 
-            <div class="modal-footer justify-content-center">
-                <span class="mr-4">Spread the word!</span>
-
-                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
-
+            <div class="modal-footer justify-content-between">
+                <div>
+                    <button id="modal-add-qte" class="btn btn-light m-1"><i class="fa fa-plus"></i></button>
+                    <span id="modal-qte-initiale" class="modal-qte-commande">1</span>
+                    <button id="modal-remove-qte" class="btn btn-light m-1"><i class="fa fa-minus"></i></button>
+                </div>
+                <button type="button" id="addToCart" class="btn btn-principal" style="width: 380px;">
+                    <div class="d-flex justify-content-between">
+                        <div class="mx-5">Ajouter <span class="modal-qte-commande">1</span> à la commande</div>
+                        <div class="modal-prix-commande">0,00 €</div>
+                    </div>
+                </button>
             </div>
 
         </div>
@@ -108,11 +115,51 @@
                 slidesToScroll: 2,
             });*/
 
+            let produit;
+            let qte = 1;
+
             $('#products').on('click', '.card-produit', function () {
-                let produit = $(this).data("produit");
+                produit = $(this).data("produit");
+
                 $("#modal-img").attr('src', '@Url.Content("~/Ressources/Images/Produits/")' + produit.photo);
+                $("#modal-nom").text(produit.nom);
+                $("#modal-description").text(produit.description);
+                $(".modal-prix-commande").text(formatPrix(produit.prix));
                 $("#productModal").modal('show');
             });
+
+            $('#productModal').on('click', '#modal-add-qte', function () {
+                qte = +$("#modal-qte-initiale").text();
+                qte++;
+                $(".modal-qte-commande").text(qte);
+                $(".modal-prix-commande").text(formatPrix(produit.prix * qte));
+            });
+
+            $('#productModal').on('click', '#modal-remove-qte', function () {
+                qte = +$("#modal-qte-initiale").text();
+                qte = qte == 1 ? 1 : --qte;
+                $(".modal-qte-commande").text(qte);
+                $(".modal-prix-commande").text(formatPrix(produit.prix * qte));
+            });
+
+            $('#productModal').on('click', '#addToCart', function () {
+                $.ajax({
+                    url: '@Url.Action("AddProduit", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idProduit: produit.idProduit, idSession: '@Session.SessionID', quantite: qte }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        //$("#panier").modal('show');
+                        $("#panierCount").text("(" + data.quantiteTotale + ")");
+                        $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                    },
+                    error: () => alert("Error")
+                });
+            });
+
+            let formatPrix = prix => new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"}).format(prix) 
+
         });
     </script>
 }

@@ -33,8 +33,8 @@ namespace AfpEat.Models
                 this.Add(item);
             }
 
-            QuantiteTotale++;
-            Montant += item.Prix;
+            QuantiteTotale += item.Quantite;
+            Montant += item.Quantite * item.Prix;
             PrixFormat = FormatPrix(Montant);
 
             return itemPanier == null ? 1 : itemPanier.Quantite;

@@ -23,16 +23,21 @@ a {
     color: #0366d6;
 }
 
-.btn-primary {
+.btn-principal {
     color: #fff;
     background-color: #252152;
     border-color: #252152;
 }
 
-    .btn-primary:hover {
+    .btn-principal:hover {
         color: #fff;
         background-color: #e9a8a6;
         border-color: #e9a8a6;
+    }
+
+    .btn-principal:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(233,168,166,.25);
     }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -206,6 +211,8 @@ img.homeTypeCuisine {
     width: 100%;
     object-fit: cover;
     overflow: hidden;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .modal.card-produit .card-img {
@@ -267,4 +274,10 @@ img.blur {
     -webkit-filter: blur(4px);
     filter: blur(4px);
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
+}
+
+.modal-produit {
+    width: 680px;
+    max-width: 680px;
+    height: 400px;
 }

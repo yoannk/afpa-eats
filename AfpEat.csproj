@@ -156,6 +156,7 @@
     <Compile Include="CommandeProduit.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\ProduitsController.cs" />
     <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
@@ -571,6 +572,11 @@
     <Content Include="Views\Home\PanierAjax.cshtml" />
     <Content Include="Views\Produits\Commande.cshtml" />
     <Content Include="Views\Restaurants\ParSpecialitee.cshtml" />
+    <Content Include="Views\Menus\Create.cshtml" />
+    <Content Include="Views\Menus\Delete.cshtml" />
+    <Content Include="Views\Menus\Details.cshtml" />
+    <Content Include="Views\Menus\Edit.cshtml" />
+    <Content Include="Views\Menus\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

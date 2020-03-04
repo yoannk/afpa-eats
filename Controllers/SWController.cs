@@ -14,7 +14,7 @@ namespace AfpEat.Controllers
         private AfpEatEntities db = new AfpEatEntities();
 
         [HttpPost]
-        public JsonResult AddProduit(int idProduit, string idSession)
+        public JsonResult AddProduit(int idProduit, string idSession, int quantite = 1)
         {
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
 
@@ -27,7 +27,7 @@ namespace AfpEat.Controllers
             // TODO check if produit exists and stock > 1
             // TODO return json avec message d'erreur
 
-            ProduitPanier produitPanier = CreateProduitPanier(idProduit);
+            ProduitPanier produitPanier = CreateProduitPanier(idProduit, quantite);
 
             if (produitPanier == null)
             {
@@ -226,7 +226,7 @@ namespace AfpEat.Controllers
             return Json(new { error = 0, message = "Erreur de connexion" }, JsonRequestBehavior.AllowGet);
         }
 
-        private ProduitPanier CreateProduitPanier(int idProduit)
+        private ProduitPanier CreateProduitPanier(int idProduit, int quantite = 1)
         {
             Produit produit = db.Produits.Find(idProduit);
 
@@ -241,7 +241,7 @@ namespace AfpEat.Controllers
                 IdRestaurant = produit.IdRestaurant,
                 Nom = produit.Nom,
                 Description = produit.Description,
-                Quantite = 1,
+                Quantite = quantite,
                 Prix = produit.Prix,
                 Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
             };
