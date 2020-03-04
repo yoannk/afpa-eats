@@ -120,7 +120,9 @@
 
             $('#products').on('click', '.card-produit', function () {
                 produit = $(this).data("produit");
+                qte = 1;
 
+                $(".modal-qte-commande").text('1');
                 $("#modal-img").attr('src', '@Url.Content("~/Ressources/Images/Produits/")' + produit.photo);
                 $("#modal-nom").text(produit.nom);
                 $("#modal-description").text(produit.description);
@@ -150,9 +152,9 @@
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
-                        //$("#panier").modal('show');
                         $("#panierCount").text("(" + data.quantiteTotale + ")");
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                        $("#productModal").modal('hide');
                     },
                     error: () => alert("Error")
                 });

@@ -99,26 +99,27 @@ namespace AfpEat.Controllers
 
             MenuPanier menuPanier = new MenuPanier();
             menuPanier.IdMenu = idMenu;
+            menuPanier.Quantite = 1;
+            menuPanier.IdRestaurant = menu.IdRestaurant;
 
-            foreach(int idProduit in idProduits)
+            foreach (int idProduit in idProduits)
             {
                 ProduitPanier produitPanier = CreateProduitPanier(idProduit);
 
                 if (produitPanier != null)
                 {
                     menuPanier.Produits.Add(produitPanier);
+                    menuPanier.Quantite++;
                 }
 
-                panier.Add(menuPanier);
+                panier.AddItem(menuPanier);
             }
 
-            //int quantiteProduit = panier.AddMenu(menuPanier);
-            int quantiteProduit = 0;
             HttpContext.Application[idSession] = panier;
 
             var data = new
             {
-                quantiteProduit,
+                quantiteProduit = menuPanier.Quantite,
                 quantiteTotale = panier.QuantiteTotale,
                 prixTotal = panier.Montant,
                 prixTotalFormat = string.Format(CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", panier.Montant)

@@ -33,6 +33,23 @@ namespace AfpEat.Controllers
             {
                 return HttpNotFound();
             }
+            //Liste des produits du restaurant
+            var produits = db.Produits.Where(p => p.IdRestaurant == menu.IdRestaurant).ToList();
+            //Parcourir les categories du menu id
+            foreach (var categorie in menu.Categories)
+            {
+                List<Produit> ProduitsCategorie = produits.Where(p => p.IdCategorie == categorie.IdCategorie).ToList();
+                //Creation d'une DDL vide
+                List<SelectListItem> items = new List<SelectListItem>();
+                //Pour chaque produit, on ajoute un option dans la DDL
+                foreach (Produit produit in ProduitsCategorie)
+                {
+                    items.Add(new SelectListItem { Text = produit.Nom, Value = produit.IdProduit.ToString() });
+                }
+                //
+                ViewData["cat" + categorie.IdCategorie] = items;
+            }
+
             return View(menu);
         }
 

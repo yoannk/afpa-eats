@@ -10,6 +10,11 @@ namespace AfpEat.Models
         public decimal Montant { get; private set; }
         public string PrixFormat { get; private set; }
 
+        public PanierModel()
+        {
+            PrixFormat = FormatPrix(0);
+        }
+
         public int AddItem(ItemPanier item)
         {
             var itemPanier = this.FirstOrDefault(i => i.GetIdProduit() == item.GetIdProduit());
@@ -26,7 +31,7 @@ namespace AfpEat.Models
 
             if (itemPanier != null)
             {
-                itemPanier.Quantite++;
+                itemPanier.Quantite += item.Quantite;
             }
             else
             {
@@ -79,6 +84,5 @@ namespace AfpEat.Models
         {
             return string.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prix);
         }
-
     }
 }

@@ -1,49 +1,21 @@
 ﻿@model AfpEat.Menu
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "DetailMenu";
 }
 
-<h2>Details</h2>
+<h2>Detail @Model.Nom</h2>
 
-<div>
-    <h4>Menu</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nom)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nom)
-        </dd>
+@foreach (var categorie in Model.Categories)
+{
+    List<SelectListItem> data = (List<SelectListItem>)ViewData["cat" + categorie.IdCategorie];
+    <div>@categorie.Nom</div>
+    @Html.DropDownList("cat" + categorie.IdCategorie, data, "Selectionner", new { @class = "form-control" })
+}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Statut)
-        </dt>
+<button class="btn btn-danger">Ajouter au panier</button>
 
-        <dd>
-            @Html.DisplayFor(model => model.Statut)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Prix)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Prix)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Restaurant.Nom)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Restaurant.Nom)
-        </dd>
-
-    </dl>
-</div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdMenu }) |
     @Html.ActionLink("Back to List", "Index")
