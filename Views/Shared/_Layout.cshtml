@@ -2,7 +2,7 @@
 
 @{
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    PanierModel panier = ( PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
+    PanierModel panier = (PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
 }
 
 <!DOCTYPE html>
@@ -62,11 +62,11 @@
 
         </ul>
 
-
     </nav>
 
+    @RenderSection("jumbotron", required: false)
 
-    <div class="container body-content">
+    <div class="container body-content mt-3">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -80,6 +80,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/scripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>

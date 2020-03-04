@@ -22,9 +22,14 @@ namespace AfpEat
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                      "~/Scripts/Slick/slick.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/font-awesome.min.css",
+                      "~/Content/Slick/slick.css",
+                      "~/Content/Slick/slick-theme.css",
                       "~/Content/site.css"));
         }
     }

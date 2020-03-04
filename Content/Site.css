@@ -14,6 +14,10 @@ a.navbar-brand {
     word-break: break-all;
 }
 
+.navbar {
+    max-height: 75px;
+}
+
 /* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
@@ -69,7 +73,7 @@ html {
 }
 
 body {
-    padding-top: 6rem;
+    padding-top: 75px;
     /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
@@ -176,7 +180,91 @@ img.homeTypeCuisine {
     background: #fbfafd;
 }
 
+/* Cards Produit */
+
+.card-produit:hover img {
+    opacity: 1;
+}
+
+.card-produit {
+    cursor: pointer;
+}
+
+.card-produit img {
+    transition: opacity .2s ease-in-out;
+    opacity: .8;
+}
+
+.card.card-produit .card-body {
+    height: 200px;
+    font-family: 'Nunito', sans-serif;
+    background: #fbfafd;
+}
+
+.card.card-produit img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.modal.card-produit .card-img {
+    height: 500px;
+    vertical-align: bottom;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+.card.card-produit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(37,33,82,.12), 0 4px 8px rgba(37,33,82,.06);
+}
+
+.card-footer {
+    background: #fbfafd;
+}
+
+/* Pagination */
+
 .pagination .active .page-link {
     background-color: orange;
     border-color: orange;
+}
+
+/* Jumbotron */
+
+.jumbotron {
+    position: relative;
+    overflow: hidden;
+}
+
+    .jumbotron .container {
+        position: relative;
+        z-index: 2;
+        background: rgba(0,0,0,0.2);
+        padding: 2rem;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 3px;
+    }
+
+.jumbotron-background {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+    .jumbotron-background img {
+        height: 600px;
+        width: 100%;
+        object-fit: cover;
+        overflow: hidden;
+    }
+
+
+img.blur {
+    -webkit-filter: blur(4px);
+    filter: blur(4px);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
 }

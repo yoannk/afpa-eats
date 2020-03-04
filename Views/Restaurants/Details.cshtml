@@ -1,23 +1,118 @@
-﻿@model AfpEat.Models.RestaurantDetailViewModel
+﻿@using Humanizer
+@model AfpEat.Models.RestaurantDetailViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Restaurant.Nom;
 }
 
-<h2>Restaurant @Model.Restaurant.Nom</h2>
+@section jumbotron
+{
+    <div class="jumbotron jumbotron-fluid bg-dark">
 
-<div>
+        <div class="jumbotron-background">
+            <img src="@Url.Content("~/Ressources/Images/Restaurants/" + (Model.Restaurant.Photos.First()?.Nom ?? "DefaultRestaurant.jpg"))" class="blur ">
+        </div>
+
+        <div class="container text-white">
+
+            <h1 class="display-4">@Model.Restaurant.Nom</h1>
+            <p class="lead">@Model.Restaurant.Description</p>
+            <hr class="my-4">
+            <p>@Model.Restaurant.Adresse @Model.Restaurant.CodePostal @Model.Restaurant.Ville</p>
+
+        </div>
+        <!-- /.container -->
+
+
+    </div>
+}
+
+<div id="products">
     @foreach (var item in Model.Produits)
     {
-        <h4>@item.Key</h4>
+        <h2 class="mb-4">Les @item.Key.Pluralize()</h2>
 
-        <ul>
+        <div class="row row-cols-md-2">
             @foreach (var produit in item.Value)
             {
-                <li>@produit.Nom - @produit.Prix €</li>
-            }
-        </ul>
+                <div class="col mb-4">
 
-        
+                    @{ 
+                        var itemInPanier = Model.Panier.FirstOrDefault(p => p.GetIdProduit() == produit.IdProduit);
+
+                        var jsonProduit = Newtonsoft.Json.JsonConvert.SerializeObject(new
+                        {
+                            idProduit = produit.IdProduit,
+                            nom = produit.Nom,
+                            photo = produit.Photos.First().Nom,
+                            description = produit.Description,
+                            quantite = itemInPanier?.Quantite ?? 0,
+                            prix = produit.Prix
+                        });
+                    }
+
+                    <div class="card card-produit mb-3" data-produit="@jsonProduit">
+                        <div class="row no-gutters">
+
+                            <div class="col-md-4">
+                                <img src="@Url.Content("~/Ressources/Images/Produits/" + produit.Photos.First().Nom)" class="card-img">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title overflow-hidden">@produit.Nom</h5>
+                                    <p class="card-text">@produit.Description</p>
+                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
     }
 </div>
+
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-body mb-0 p-0">
+                <img class="embed-responsive embed-responsive-16by9 z-depth-1-half" id="modal-img" src="#" />
+                <div>
+                    <h3></h3>
+                </div>
+            </div>
+
+
+
+            <div class="modal-footer justify-content-center">
+                <span class="mr-4">Spread the word!</span>
+
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Close</button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            /*$('.slick-carousel').slick({
+                slidesToShow: 4,
+                slidesToScroll: 2,
+            });*/
+
+            $('#products').on('click', '.card-produit', function () {
+                let produit = $(this).data("produit");
+                $("#modal-img").attr('src', '@Url.Content("~/Ressources/Images/Produits/")' + produit.photo);
+                $("#productModal").modal('show');
+            });
+        });
+    </script>
+}

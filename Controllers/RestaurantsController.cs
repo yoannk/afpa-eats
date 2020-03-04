@@ -51,6 +51,7 @@ namespace AfpEat.Controllers
             RestaurantDetailViewModel restaurantDetailViewModel = new RestaurantDetailViewModel();
             restaurantDetailViewModel.Restaurant = restaurant;
             restaurantDetailViewModel.Produits = restaurant.Produits.GroupBy(p => p.Categorie.Nom).ToDictionary(p => p.Key, p => p.ToList());
+            restaurantDetailViewModel.Panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
 
             return View(restaurantDetailViewModel);
         }
