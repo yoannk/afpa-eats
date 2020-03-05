@@ -235,8 +235,7 @@
     <Compile Include="Utilities\Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\bdd_afpeat.sql" />
-    <Content Include="App_Data\data.sql" />
+    <Content Include="App_Data\script.sql" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
