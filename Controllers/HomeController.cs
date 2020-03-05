@@ -20,7 +20,6 @@ namespace AfpEat.Controllers
 
             int totalPages = (int)Math.Ceiling(restaurants.Count() / (double)pageSize);
 
-
             if (page < 1)
             {
                 page = 1;

@@ -18,6 +18,7 @@ namespace AfpEat
         public Photo()
         {
             this.TypeCuisines = new HashSet<TypeCuisine>();
+            this.Menus = new HashSet<Menu>();
             this.Produits = new HashSet<Produit>();
             this.Restaurants = new HashSet<Restaurant>();
         }
@@ -27,6 +28,8 @@ namespace AfpEat
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TypeCuisine> TypeCuisines { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Menu> Menus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Produit> Produits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

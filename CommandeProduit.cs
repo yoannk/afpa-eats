@@ -18,6 +18,7 @@ namespace AfpEat
         public CommandeProduit()
         {
             this.Menus = new HashSet<Menu>();
+            this.Produits = new HashSet<Produit>();
         }
     
         public int IdCommandeProduit { get; set; }
@@ -30,5 +31,7 @@ namespace AfpEat
         public virtual Produit Produit { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Menu> Menus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Produit> Produits { get; set; }
     }
 }

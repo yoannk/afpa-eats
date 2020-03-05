@@ -432,6 +432,11 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\Slick\slick.scss" />
+    <Content Include="Content\Slick\slick-theme.scss" />
+    <Content Include="Content\Slick\fonts\slick.woff" />
+    <Content Include="Content\Slick\fonts\slick.ttf" />
+    <Content Include="Content\Slick\fonts\slick.eot" />
     <EntityDeploy Include="Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -439,11 +444,6 @@
     <Content Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Slick\slick.scss" />
-    <Content Include="Content\Slick\slick-theme.scss" />
-    <Content Include="Content\Slick\fonts\slick.woff" />
-    <Content Include="Content\Slick\fonts\slick.ttf" />
-    <Content Include="Content\Slick\fonts\slick.eot" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

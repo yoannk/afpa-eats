@@ -13,6 +13,8 @@ namespace AfpEat
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
                 name: "Connexion",
                 url: "connexion",
@@ -29,12 +31,6 @@ namespace AfpEat
                 name: "Deconnexion",
                 url: "deconnexion",
                 defaults: new { controller = "Security", action = "Deconnexion" }
-            );
-
-            routes.MapRoute(
-                name: "DetailProduit",
-                url: "produit/{nom}/{id}",
-                defaults: new { controller = "Produits", action = "Details" }
             );
 
             routes.MapRoute(

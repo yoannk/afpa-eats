@@ -20,18 +20,18 @@
             {
                 <div class="col mb-4">
                     <div class="card">
-                        <a href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })">
+                        <a href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })">
                             <img src="@Url.Content("~/Ressources/Images/Restaurants/" + item.Photos.First().Nom)" class="card-img-top" alt="...">
                         </a>
 
                         <div class="card-body">
-                            <a class="text-decoration-none text-reset" href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })">
+                            <a class="text-decoration-none text-reset" href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })">
                                 <h5 class="card-title">@item.Nom</h5>
                             </a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">
-                                <a href="@Url.Action("Details", "Restaurants", new { id = item.IdRestaurant })" class="btn btn-principal">
+                                <a href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })" class="btn btn-principal">
                                     Commander
                                 </a>
                             </small>

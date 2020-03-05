@@ -25,6 +25,7 @@ namespace AfpEat
     
         public int IdRestaurant { get; set; }
         public string Nom { get; set; }
+        public string Slug { get; set; }
         public int IdTypeCuisine { get; set; }
         public string Description { get; set; }
         public decimal Budget { get; set; }

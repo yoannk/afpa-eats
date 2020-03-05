@@ -51,6 +51,8 @@ namespace AfpEat.Controllers
             db.Database.ExecuteSqlCommand("DELETE FROM [CommandeProduit]");
             db.Database.ExecuteSqlCommand("DELETE FROM [RestaurantPhoto]");
             db.Database.ExecuteSqlCommand("DELETE FROM [ProduitPhoto]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [Menu]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [MenuCategorie]");
             db.Database.ExecuteSqlCommand("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'");
         }
 
@@ -194,7 +196,7 @@ namespace AfpEat.Controllers
             var restaurant = new Restaurant()
             {
                 Nom = nom,
-                //Slug = Helpers.GenerateSlug(nom),
+                Slug = Helpers.GenerateSlug(nom),
                 IdTypeCuisine = idTypeCuisines,
                 Description = faker.Lorem.Paragraph(),
                 Budget = faker.Random.Int(3, 15),
@@ -281,8 +283,6 @@ namespace AfpEat.Controllers
                 CreateProduit(restaurant, "Dessert", "Éclair Praliné", "Une pâte à choux garnie d'une onctueuse mousse pralinée, recouverte d'un glaçage et d'éclats de noisettes caramélisées.", 3.70m);
                 CreateProduit(restaurant, "Dessert", "Moelleux au chocolat", "Un moelleux au chocolat composé d'oeufs, chocolat noir, beurre, sucre, farine, et c'est tout! A déguster chaud.", 3.40m);
                 CreateProduit(restaurant, "Dessert", "Cup de fruits de saison", "Fruits selon la saison", 3.80m);
-
-
             }
         }
 

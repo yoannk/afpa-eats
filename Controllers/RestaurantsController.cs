@@ -36,7 +36,8 @@ namespace AfpEat.Controllers
         }
 
         // GET: Restaurants/Details/5
-        public ActionResult Details(int? id)
+        [Route("~/restaurant/{id:int}/{slug?}", Name = "restaurantsDetails")]
+        public ActionResult Details(int? id, string slug)
         {
             if (id == null)
             {
@@ -46,6 +47,11 @@ namespace AfpEat.Controllers
             if (restaurant == null)
             {
                 return HttpNotFound();
+            }
+
+            if (restaurant.Slug != slug)
+            {
+                return RedirectToRoute("restaurantsDetails", new { id = restaurant.IdRestaurant, slug = restaurant.Slug });
             }
 
             RestaurantDetailViewModel restaurantDetailViewModel = new RestaurantDetailViewModel();
