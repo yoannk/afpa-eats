@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -20,20 +21,32 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
-            // TODO check if produit exists and stock > 1
-            // TODO return json avec message d'erreur
 
-            ProduitPanier produitPanier = CreateProduitPanier(idProduit, quantite);
+            Produit produit = db.Produits.Find(idProduit);
 
-            if (produitPanier == null)
+            if (produit == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
             }
 
+            if (produit.Quantite <= 0)
+            {
+                return Json($"Produit #{idProduit} indisponible", JsonRequestBehavior.AllowGet);
+            }
+
+            if (panier.IdRestaurant != 0 && panier.QuantiteTotale > 0 && panier.IdRestaurant != produit.IdRestaurant)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                return Json("Impossible d'ajouter au panier un produit d'un autre restaurant", JsonRequestBehavior.AllowGet);
+            }
+
+            ProduitPanier produitPanier = CreateProduitPanier(produit, quantite);
+
+            panier.IdRestaurant = produit.IdRestaurant;
             int quantiteProduit = panier.AddItem(produitPanier);
             HttpContext.Application[idSession] = panier;
 
@@ -55,16 +68,18 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
-            ProduitPanier produitPanier = CreateProduitPanier(idProduit);
+            Produit produit = db.Produits.Find(idProduit);
 
-            if (produitPanier == null)
+            if (produit == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
             }
+
+            ProduitPanier produitPanier = CreateProduitPanier(produit);
 
             int quantiteProduit = panier.RemoveItem(produitPanier);
             HttpContext.Application[idSession] = panier;
@@ -87,14 +102,14 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 
             Menu menu = db.Menus.Find(idMenu);
 
             if (menu == null)
             {
-                return Json(0, JsonRequestBehavior.AllowGet);
+                return Json($"Menu #{idMenu} non trouvé", JsonRequestBehavior.AllowGet);
             }
 
             MenuPanier menuPanier = new MenuPanier();
@@ -104,13 +119,15 @@ namespace AfpEat.Controllers
 
             foreach (int idProduit in idProduits)
             {
-                ProduitPanier produitPanier = CreateProduitPanier(idProduit);
-
-                if (produitPanier != null)
+                Produit produit = db.Produits.Find(idProduit);
+                if (produit == null)
                 {
-                    menuPanier.Produits.Add(produitPanier);
-                    menuPanier.Quantite++;
+                    return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
                 }
+
+                ProduitPanier produitPanier = CreateProduitPanier(produit);
+                menuPanier.Produits.Add(produitPanier);
+                menuPanier.Quantite++;
 
                 panier.AddItem(menuPanier);
             }
@@ -176,6 +193,7 @@ namespace AfpEat.Controllers
 
             utilisateur.Solde -= panier.Montant;
 
+
             Commande commande = new Commande()
             {
                 IdUtilisateur = utilisateur.IdUtilisateur,
@@ -220,15 +238,8 @@ namespace AfpEat.Controllers
             return Json(new { error = 0, message = "Erreur de connexion" }, JsonRequestBehavior.AllowGet);
         }
 
-        private ProduitPanier CreateProduitPanier(int idProduit, int quantite = 1)
+        private ProduitPanier CreateProduitPanier(Produit produit, int quantite = 1)
         {
-            Produit produit = db.Produits.Find(idProduit);
-
-            if (produit == null)
-            {
-                return null;
-            }
-
             var produitPanier = new ProduitPanier()
             {
                 IdProduit = produit.IdProduit,
@@ -237,7 +248,7 @@ namespace AfpEat.Controllers
                 Description = produit.Description,
                 Quantite = quantite,
                 Prix = produit.Prix,
-                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "default.jpg"
+                Photo = produit.Photos.FirstOrDefault()?.Nom ?? "DefaultProduit.jpg"
             };
 
             return produitPanier;

@@ -156,7 +156,7 @@
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
                         $("#productModal").modal('hide');
                     },
-                    error: () => alert("Error")
+                    error: () => console.log(data)
                 });
             });
 
