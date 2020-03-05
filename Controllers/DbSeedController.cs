@@ -1,4 +1,5 @@
-﻿using Bogus;
+﻿using AfpEat.Utilities;
+using Bogus;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -193,6 +194,7 @@ namespace AfpEat.Controllers
             var restaurant = new Restaurant()
             {
                 Nom = nom,
+                //Slug = Helpers.GenerateSlug(nom),
                 IdTypeCuisine = idTypeCuisines,
                 Description = faker.Lorem.Paragraph(),
                 Budget = faker.Random.Int(3, 15),

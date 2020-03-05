@@ -148,10 +148,23 @@ else
                 let prix = parseFloat(parent.data('prix').replace(',', '.'));
                 let qte = +parent.data('qte');
                 let id = +parent.data('id');
-                qte++;
-                parent.data('qte', qte);
-                $("#panier-qte-line-" + id).text(qte);
-                $("#panier-prix-total-line-" + id).text(formatPrix(prix * qte));
+                $.ajax({
+                    url: '@Url.Action("AddProduit", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idProduit: id, idSession: '@Session.SessionID' }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#panierCount").text("(" + data.quantiteTotale + ")");
+                        $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                        qte++;
+                        parent.data('qte', qte);
+                        $("#panier-qte-line-" + id).text(qte);
+                        $("#panier-prix-total-line-" + id).text(formatPrix(prix * qte));
+                    },
+                    error: () => console.log('error', data)
+                });
+                
             });
 
             $('#panier').on('click', '.panier-remove-qte', function () {
@@ -159,16 +172,32 @@ else
                 let prix = parseFloat(parent.data('prix').replace(',', '.'));
                 let qte = +parent.data('qte');
                 let id = +parent.data('id');
-                qte--;
-                if (qte < 1) {
-                    $(this).closest('tr').fadeOut(300, function(){
-                        $(this).remove();
-                    });
-                    return;
-                }
-                parent.data('qte', qte);
-                $("#panier-qte-line-" + id).text(qte);
-                $("#panier-prix-total-line-" + id).text(formatPrix(prix * qte));
+                $.ajax({
+                    url: '@Url.Action("RemoveProduit", "SW")',
+                    type: 'POST',
+                    data: JSON.stringify({ idProduit: id, idSession: '@Session.SessionID' }),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        $("#panierCount").text("(" + data.quantiteTotale + ")");
+                        $("#panierPrixTotal").text(data.prixTotalFormat + " €");
+                        if (data.quantiteTotale < 1) {
+                            document.location.href='@Url.Action("Panier", "Home")';
+                        }
+                        qte--;
+                        if (qte < 1) {
+                            parent.closest('tr').fadeOut(300, function(){
+                                $(this).remove();
+                            });
+                            return;
+                        }
+                        parent.data('qte', qte);
+                        $("#panier-qte-line-" + id).text(qte);
+                        $("#panier-prix-total-line-" + id).text(formatPrix(prix * qte));
+                    },
+                    error: () => console.log('error', data)
+                });
+                
             });
 
             $("#btnCommande").click(function () {
@@ -199,7 +228,7 @@ else
                 success: function (data) {
                     document.location.href='@Url.Action("Index", "Home")';
                 },
-                error: () => alert("Error")
+                error: () => console.log('error', data)
             });
         }
 
@@ -222,13 +251,13 @@ else
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
                     if (data.error == 1) {
-                        alert(data.message);
+                        console.log('error', data)
                     }else {
                         SaveCommandeSW();
                         $('modalConnexion').modal('show');
                     }
                 },
-                error: () => alert("Error")
+                error: () => console.log('error', data)
             });
         }
 

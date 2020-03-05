@@ -33,12 +33,17 @@ namespace AfpEat
         {
             AfpEatEntities db = new AfpEatEntities();
 
-            SessionUtilisateur sessionUtilisateur = new SessionUtilisateur();
-            sessionUtilisateur.IdSession = Session.SessionID;
-            sessionUtilisateur.DateSession = DateTime.Now;
+            var sessionUtilisateur = db.SessionUtilisateurs.FirstOrDefault(s => s.IdSession == Session.SessionID);
 
-            db.SessionUtilisateurs.Add(sessionUtilisateur);
-            db.SaveChanges();
+            if (sessionUtilisateur == null)
+            {
+                sessionUtilisateur = new SessionUtilisateur();
+                sessionUtilisateur.IdSession = Session.SessionID;
+                sessionUtilisateur.DateSession = DateTime.Now;
+
+                db.SessionUtilisateurs.Add(sessionUtilisateur);
+                db.SaveChanges();
+            }
         }
 
         protected void Session_End()
