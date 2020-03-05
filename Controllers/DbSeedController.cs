@@ -34,6 +34,7 @@ namespace AfpEat.Controllers
             CreateCategorie();
             CreateRestaurants();
             CreateProduits();
+            CreateMenus();
 
             return View(logs);
         }
@@ -238,7 +239,7 @@ namespace AfpEat.Controllers
                 CreateProduit(restaurant, "Salade", "Salade poulet , trio de carottes et oeuf poché", "Salade composée , mache , trio de carottes , tomate cerise , oeuf poché , medaillon de poulet roti , graine de courge", 8.70m);
 
                 CreateProduit(restaurant, "Sandwich", "Graine de chic poulet et pesto rosso", "pain couronne et graines bio , poulet roti , pesto rosso , mozza , roquette", 8.70m);
-                CreateProduit(restaurant, "Sandwich", "Graine de chic Guacamole et Galettes de légumes de Soleil. 100% Vegan", "Pain couronne et graines de pavot, galettes de légumes confits, guacamole, tomate cerise, pointe de verdure.", 8.70m);
+                CreateProduit(restaurant, "Sandwich", "Graine de chic Guacamole et Galettes de légumes de Soleil", "Pain couronne et graines de pavot, galettes de légumes confits, guacamole, tomate cerise, pointe de verdure.", 8.70m);
                 CreateProduit(restaurant, "Sandwich", "Dolce vita", "Déjeunette la mie câline, pesto vert, médaillons de poulet, tomates confite, pécorino et roquette.", 8.70m);
                 CreateProduit(restaurant, "Sandwich", "Coppa Tomme de Brebis", "Déjeunette baguette la véritable, Tomme de Brebis, Coppa, beurre léger, pointe de verdure.", 8.70m);
 
@@ -351,6 +352,41 @@ namespace AfpEat.Controllers
 
             return produit;
         }
+
+        private void CreateMenus()
+        {
+            // Menus restaurant Pokawa
+
+            var restoPokawa = db.Restaurants.First(r => r.Nom == "Pokawa");
+            var catPlat = db.Categories.First(c => c.Nom == "Plat");
+            var catEntree = db.Categories.First(c => c.Nom == "Entrée");
+            var catDessert = db.Categories.First(c => c.Nom == "Dessert");
+            var catBoisson = db.Categories.First(c => c.Nom == "Boisson");
+
+            db.Menus.Add(new Menu()
+            {
+                Nom = "Menu Poke bowl signature & boisson",
+                Restaurant = restoPokawa,
+                Categories = new List<Categorie>() { catPlat, catBoisson },
+                Photo = new Photo { Nom = "Menu Poke bowl signature & boisson" },
+                Statut = true,
+                Prix = 12.90m
+            });
+
+            db.Menus.Add(new Menu()
+            {
+                Nom = "Menu Poke bowl signature, boisson & dessert",
+                Restaurant = restoPokawa,
+                Categories = new List<Categorie>() { catPlat, catBoisson, catDessert },
+                Photo = new Photo { Nom = "Menu Poke bowl signature, boisson & dessert" },
+                Statut = true,
+                Prix = 15.90m
+            });
+
+            db.SaveChanges();
+
+        }
+
 
     }
 }

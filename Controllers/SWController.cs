@@ -145,7 +145,7 @@ namespace AfpEat.Controllers
         public JsonResult SaveCommande(string idSession)
         {
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
-            List<ProduitPanier> panier = (List<ProduitPanier>)HttpContext.Application[idSession] ?? new List<ProduitPanier>();
+            PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
 
             Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.IdSession == idSession);
 
@@ -159,13 +159,14 @@ namespace AfpEat.Controllers
                 return Json("Votre panier est vide.", JsonRequestBehavior.AllowGet);
             }
 
-            int idRestaurant = 0;
-            decimal prixTotal = 0;
+            if (panier.Montant > utilisateur.Solde || utilisateur.Solde <= 0)
+            {
+                return Json("Votre solde est insuffisant.", JsonRequestBehavior.AllowGet);
+            }
+
 
             foreach (ItemPanier itemPanier in panier)
             {
-                prixTotal += itemPanier.Prix * itemPanier.Quantite;
-                idRestaurant = itemPanier.IdRestaurant;
 
                 /*if (itemPanier is ProduitPanier produitPanier)
                 {
@@ -173,30 +174,22 @@ namespace AfpEat.Controllers
                 }*/
             }
 
-            if (prixTotal > utilisateur.Solde)
-            {
-                return Json("Votre solde est insuffisant.", JsonRequestBehavior.AllowGet);
-            }
-
-            utilisateur.Solde -= prixTotal;
+            utilisateur.Solde -= panier.Montant;
 
             Commande commande = new Commande()
             {
                 IdUtilisateur = utilisateur.IdUtilisateur,
-                IdRestaurant = idRestaurant,
+                IdRestaurant = panier.IdRestaurant,
                 Date = DateTime.Now,
-                Prix = prixTotal,
+                Prix = panier.Montant,
                 IdEtatCommande = 1
             };
-
-            //db.Commandes.Add(commande);
-            //db.SaveChanges();
 
             foreach (ProduitPanier produitPanier in panier)
             {
                 CommandeProduit commandeProduit = new CommandeProduit()
                 {
-                    //IdCommande = commande.IdCommande,
+                    IdCommande = commande.IdCommande,
                     IdProduit = produitPanier.IdProduit,
                     Prix = produitPanier.Prix,
                     Quantite = produitPanier.Quantite

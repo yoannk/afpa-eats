@@ -6,6 +6,7 @@ namespace AfpEat.Models
 {
     public class PanierModel : List<ItemPanier>
     {
+        public int IdRestaurant { get; set; }
         public int QuantiteTotale { get; private set; }
         public decimal Montant { get; private set; }
         public string PrixFormat { get; private set; }
