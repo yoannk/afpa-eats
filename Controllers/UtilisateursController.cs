@@ -127,7 +127,7 @@ namespace AfpEat.Controllers
         [HttpPost]
         [Route("~/connexion")]
         [ValidateAntiForgeryToken]
-        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel)
+        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel, bool? fromPanier)
         {
             string login = connexionViewModel.Login;
             string password = connexionViewModel.Password;
@@ -142,7 +142,18 @@ namespace AfpEat.Controllers
                     db.SaveChanges();
 
                     Session["Utilisateur"] = utilisateur;
-                    return RedirectToAction("Index", "Home");
+
+                    PanierModel panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
+
+                    if (fromPanier == true && panier.Count > 0)
+                    {
+                        return RedirectToAction("Panier", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    
                 }
             }
 
