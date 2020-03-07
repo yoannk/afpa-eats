@@ -27,14 +27,13 @@
                         <div class="card-body">
                             <a class="text-decoration-none text-reset" href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })">
                                 <h5 class="card-title">@item.Nom</h5>
+                                <p>@item.TypeCuisine.Nom</p>
                             </a>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">
-                                <a href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })" class="btn btn-principal">
-                                    Commander
-                                </a>
-                            </small>
+                            <a href="@Url.RouteUrl("restaurantsDetails", new { id = item.IdRestaurant, slug = item.Slug })" class="btn btn-principal">
+                                Commander
+                            </a>
                         </div>
                     </div>
                 </div>

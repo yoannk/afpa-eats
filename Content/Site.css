@@ -9,13 +9,13 @@
 a.navbar-brand {
     white-space: normal;
     font-family: 'Yellowtail', cursive;
-    font-size: xx-large;
+    font-size: x-large;
     text-align: center;
     word-break: break-all;
 }
 
 .navbar {
-    max-height: 75px;
+    max-height: 66px;
 }
 
 a {
@@ -77,8 +77,8 @@ html {
 }
 
 body {
-    /* footer height */
-    padding-top: 75px;
+    /* navbar height */
+    padding-top: 66px;
     /* footer height */
     margin-bottom: 60px;
 }

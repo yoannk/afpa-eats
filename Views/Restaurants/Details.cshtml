@@ -18,8 +18,7 @@
             <h1 class="display-4">@Model.Restaurant.Nom</h1>
             <p class="lead">@Model.Restaurant.Description</p>
             <hr class="my-4">
-            <p>@Model.Restaurant.Adresse @Model.Restaurant.CodePostal @Model.Restaurant.Ville</p>
-
+            <p>Spécialité @Model.Restaurant.TypeCuisine.Nom - @Model.Restaurant.Adresse @Model.Restaurant.CodePostal @Model.Restaurant.Ville</p>
         </div>
 
     </div>
@@ -30,7 +29,7 @@
     {
         <h2 class="mb-4">Les @item.Key.Pluralize()</h2>
 
-        <div class="row row-cols-md-2">
+        <div class="row row-cols-md-2 row-cols-sm-1">
             @foreach (var produit in item.Value)
             {
                 <div class="col mb-4">
@@ -56,10 +55,10 @@
                                 <img src="@Url.Content("~/Ressources/Images/Produits/" + produit.Photos.First().Nom)" class="card-img">
                             </div>
                             <div class="col-md-8">
-                                <div class="card-body overflow-hidden">
+                                <div class="card-body overflow-hidden d-flex flex-column">
                                     <h5 class="card-title">@produit.Nom</h5>
                                     <p class="card-text">@produit.Description</p>
-                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                    <span class="text-muted small mt-auto">@produit.Prix €</span>
                                 </div>
                             </div>
                         </div>
