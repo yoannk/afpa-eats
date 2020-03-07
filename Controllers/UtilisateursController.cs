@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AfpEat;
+using AfpEat.Models;
 
 namespace AfpEat.Controllers
 {
@@ -113,6 +114,48 @@ namespace AfpEat.Controllers
             db.Utilisateurs.Remove(utilisateur);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: connexion
+        [Route("~/connexion")]
+        public ActionResult Connexion()
+        {
+            return View();
+        }
+
+        // POST: connexion
+        [HttpPost]
+        [Route("~/connexion")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel)
+        {
+            string login = connexionViewModel.Login;
+            string password = connexionViewModel.Password;
+
+            if (!String.IsNullOrWhiteSpace(login) && !String.IsNullOrWhiteSpace(password))
+            {
+                Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.Matricule == login && u.Password == password);
+
+                if (utilisateur != null)
+                {
+                    utilisateur.IdSession = Session.SessionID;
+                    db.SaveChanges();
+
+                    Session["Utilisateur"] = utilisateur;
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return View(connexionViewModel);
+        }
+
+        // GET: deconnexion
+        [Route("~/deconnexion")]
+        public ActionResult Deconnexion()
+        {
+            Session["Utilisateur"] = null;
+
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

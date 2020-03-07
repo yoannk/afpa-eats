@@ -16,24 +16,6 @@ namespace AfpEat
             routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
-                name: "Connexion",
-                url: "connexion",
-                defaults: new { controller = "Security", action = "Connexion" }
-            );
-
-            routes.MapRoute(
-                name: "Inscription",
-                url: "inscription",
-                defaults: new { controller = "Security", action = "Inscription" }
-            );
-
-            routes.MapRoute(
-                name: "Deconnexion",
-                url: "deconnexion",
-                defaults: new { controller = "Security", action = "Deconnexion" }
-            );
-
-            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

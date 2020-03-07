@@ -159,7 +159,6 @@
     <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\ProduitsController.cs" />
     <Compile Include="Controllers\RestaurantsController.cs" />
-    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\DbSeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SWController.cs" />
@@ -557,8 +556,6 @@
     <Content Include="Views\Utilisateurs\Edit.cshtml" />
     <Content Include="Views\Utilisateurs\Index.cshtml" />
     <Content Include="Views\DbSeed\Index.cshtml" />
-    <Content Include="Views\Security\Connexion.cshtml" />
-    <Content Include="Views\Security\Inscription.cshtml" />
     <Content Include="Views\Produits\Create.cshtml" />
     <Content Include="Views\Produits\Delete.cshtml" />
     <Content Include="Views\Produits\Details.cshtml" />
@@ -578,6 +575,7 @@
     <Content Include="Views\Menus\Details.cshtml" />
     <Content Include="Views\Menus\Edit.cshtml" />
     <Content Include="Views\Menus\Index.cshtml" />
+    <Content Include="Views\Utilisateurs\Connexion.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
