@@ -18,7 +18,6 @@ a.navbar-brand {
     max-height: 75px;
 }
 
-/* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
 }
@@ -78,8 +77,9 @@ html {
 }
 
 body {
+    /* footer height */
     padding-top: 75px;
-    /* Margin bottom by footer height */
+    /* footer height */
     margin-bottom: 60px;
 }
 
@@ -103,21 +103,6 @@ ul {
     line-height: 60px; /* Vertically center the text there */
     font-family: 'Nunito', sans-serif;
 }
-/*Backgrounds*/
-/*.bg-navbar {
-    background: -webkit-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
-    background: -o-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
-    background: -moz-linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
-    background: linear-gradient(110deg, #e9a8a6 60%, #252152 60%);
-}
-
-.bg-footer {
-    background: -webkit-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
-    background: -o-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
-    background: -moz-linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
-    background: linear-gradient(110deg, #252152 60%, #e9a8a6 60%);
-}*/
-
 
 /* Login */
 
@@ -276,8 +261,15 @@ img.blur {
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
 }
 
+/* Modal */
+
 .modal-produit {
-    width: 680px;
-    max-width: 680px;
-    height: 400px;
+    min-width: 680px;
+}
+
+.modal-img {
+    height: 520px;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
 }
