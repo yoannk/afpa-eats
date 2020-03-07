@@ -394,7 +394,7 @@
     <Content Include="Ressources\Images\Restaurants\Zaatar Libanais.jpg" />
     <Content Include="Ressources\Images\Restaurants\Zoe Bouillon.jpg" />
     <Content Include="Ressources\Images\Site\avatar.png" />
-    <Content Include="Ressources\Images\Site\Logo_Afpa.jpg" />
+    <Content Include="Ressources\Images\Site\logo_afpa.png" />
     <Content Include="Ressources\Images\TypeCuisine\asiatique.jpg" />
     <Content Include="Ressources\Images\TypeCuisine\boulangerie.jpg" />
     <Content Include="Ressources\Images\TypeCuisine\brasserie.jpg" />
