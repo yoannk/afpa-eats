@@ -10,5 +10,6 @@ namespace AfpEat.Models
         public Restaurant Restaurant { get; set; }
         public Dictionary<string, List<Produit>> Produits { get; set; }
         public PanierModel Panier { get; set; }
+        public bool UserCanOrder { get; set; }
     }
 }

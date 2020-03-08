@@ -30,17 +30,19 @@ namespace AfpEat.Controllers
 
             if (produit == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
             }
 
             if (produit.Quantite <= 0)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json($"Produit #{idProduit} indisponible", JsonRequestBehavior.AllowGet);
             }
 
             if (panier.IdRestaurant != 0 && panier.QuantiteTotale > 0 && panier.IdRestaurant != produit.IdRestaurant)
             {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Impossible d'ajouter au panier un produit d'un autre restaurant", JsonRequestBehavior.AllowGet);
             }
 
@@ -68,6 +70,7 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 
@@ -76,6 +79,7 @@ namespace AfpEat.Controllers
 
             if (produit == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
             }
 
@@ -102,6 +106,7 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 
@@ -109,6 +114,7 @@ namespace AfpEat.Controllers
 
             if (menu == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json($"Menu #{idMenu} non trouvé", JsonRequestBehavior.AllowGet);
             }
 
@@ -122,6 +128,7 @@ namespace AfpEat.Controllers
                 Produit produit = db.Produits.Find(idProduit);
                 if (produit == null)
                 {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     return Json($"Produit #{idProduit} non trouvé", JsonRequestBehavior.AllowGet);
                 }
 
@@ -168,16 +175,19 @@ namespace AfpEat.Controllers
 
             if (utilisateur == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Utilisateur non trouvé.", JsonRequestBehavior.AllowGet);
             }
 
             if (panier.Count == 0)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Votre panier est vide.", JsonRequestBehavior.AllowGet);
             }
 
             if (panier.Montant > utilisateur.Solde || utilisateur.Solde <= 0)
             {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Votre solde est insuffisant.", JsonRequestBehavior.AllowGet);
             }
 
@@ -232,10 +242,11 @@ namespace AfpEat.Controllers
                 utilisateur.IdSession = idSession;
                 db.SaveChanges();
 
-                return Json(new { error = 1, message = "ok" }, JsonRequestBehavior.AllowGet);
+                return Json("ok", JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new { error = 0, message = "Erreur de connexion" }, JsonRequestBehavior.AllowGet);
+            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return Json("Erreur de connexion", JsonRequestBehavior.AllowGet);
         }
 
         private ProduitPanier CreateProduitPanier(Produit produit, int quantite = 1)

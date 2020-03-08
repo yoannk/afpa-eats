@@ -114,6 +114,7 @@
                 slidesToScroll: 2,
             });*/
 
+            let canOrder = @Model.UserCanOrder.ToString().ToLower();
             let produit;
             let qte = 1;
 
@@ -144,6 +145,14 @@
             });
 
             $('#productModal').on('click', '#addToCart', function () {
+
+                if (!canOrder) {
+                    var content = "<div class='alert alert-warning'>Une commande pour un autre restaurant est en cours !</div>";
+                    content += "<div><a href='@Url.Action("Panier", "Home")' class='btn btn-principal'>Voir mon panier</a></div>";
+                    $(".modal-footer").html(content);
+                    return;
+                }
+
                 $.ajax({
                     url: '@Url.Action("AddProduit", "SW")',
                     type: 'POST',
@@ -155,7 +164,9 @@
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
                         $("#productModal").modal('hide');
                     },
-                    error: () => console.log(data)
+                    error: function (data) {
+                        $(".modal-footer").html("<div class='alert alert-danger'>Erreur : " + data.responseJSON + "</div>");
+                    }
                 });
             });
 

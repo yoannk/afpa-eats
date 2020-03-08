@@ -54,10 +54,18 @@ namespace AfpEat.Controllers
                 return RedirectToRoute("restaurantsDetails", new { id = restaurant.IdRestaurant, slug = restaurant.Slug });
             }
 
+            var panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
+
             RestaurantDetailViewModel restaurantDetailViewModel = new RestaurantDetailViewModel();
             restaurantDetailViewModel.Restaurant = restaurant;
             restaurantDetailViewModel.Produits = restaurant.Produits.GroupBy(p => p.Categorie.Nom).ToDictionary(p => p.Key, p => p.ToList());
-            restaurantDetailViewModel.Panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
+            restaurantDetailViewModel.Panier = panier;
+            restaurantDetailViewModel.UserCanOrder = true;
+
+            if (panier.IdRestaurant != 0 && panier.QuantiteTotale > 0 && panier.IdRestaurant != id)
+            {
+                restaurantDetailViewModel.UserCanOrder = false;
+            }
 
             return View(restaurantDetailViewModel);
         }

@@ -1,18 +1,17 @@
 ﻿@using AfpEat.Models
-@model IEnumerable<AfpEat.Models.ItemPanier>
+@model PanierModel
 
 @{
     ViewBag.Title = "Panier";
     Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    PanierModel panier = (PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
     string isConnected = utilisateur != null ? "true" : "false";
 }
 
 
 
-@if (panier.Count == 0)
+@if (Model.Count == 0)
 {
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-secondary" role="alert">
         Votre panier est vide ! <a href="@Url.Action("Index", "Home")">Voir les restaurants.</a>
     </div>
 }
@@ -41,7 +40,7 @@ else
                     </thead>
                     <tbody>
 
-                        @foreach (var item in panier)
+                        @foreach (var item in Model)
                         {
                             <tr>
                                 <th scope="row" class="border-0">
@@ -93,7 +92,7 @@ else
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary</div>
             <div class="p-4">
                 <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
                 <ul class="list-unstyled mb-4">
