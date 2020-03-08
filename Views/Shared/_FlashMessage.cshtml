@@ -1,0 +1,17 @@
+﻿@using AfpEat.Utilities
+
+@if (TempData["FlashMessage"] is FlashMessage flash)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.notify({
+                message: '@flash.Message'
+            }, {
+                type: '@flash.Type.ToString().ToLower()',
+                z_index: 1,
+                offset: { x: 21, y: 67 },
+                animate: { enter: 'animated fadeInRight', exit: 'animated fadeOutRight' }
+            });
+        });
+    </script>
+}

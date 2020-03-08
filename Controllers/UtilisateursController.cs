@@ -169,6 +169,21 @@ namespace AfpEat.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // GET: mes-commandes
+        [Route("~/mes-commandes", Name = "MesCommandes")]
+        public ActionResult MesCommandes()
+        {
+            Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
+            if (utilisateur == null)
+            {
+                return RedirectToAction("Connexion", "Utilisateurs");
+            }
+
+            List<Commande> commandes = db.Commandes.Where(c => c.IdUtilisateur == utilisateur.IdUtilisateur).ToList();
+
+            return View(commandes);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

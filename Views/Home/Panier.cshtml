@@ -227,7 +227,9 @@ else
                 success: function (data) {
                     document.location.href='@Url.Action("Index", "Home")';
                 },
-                error: () => console.log('error', data)
+                error: function (data) {
+                    console.log(data);
+                }
             });
         }
 

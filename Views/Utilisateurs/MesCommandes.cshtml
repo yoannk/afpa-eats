@@ -1,0 +1,42 @@
+﻿@model IEnumerable<AfpEat.Commande>
+
+@{
+    ViewBag.Title = "Mes Commandes";
+}
+
+<h2>Mes Commandes</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Restaurant
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Prix
+        </th>
+        <th>
+            Produits
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.Restaurant.Nom
+        </td>
+        <td>
+            @item.Date.ToString("le dd/MM/yyyy à HH:mm")
+        </td>
+        <td>
+            @string.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", item.Prix)
+        </td>
+        <td>
+            ...
+        </td>
+    </tr>
+}
+
+</table>
