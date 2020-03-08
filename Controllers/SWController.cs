@@ -231,7 +231,8 @@ namespace AfpEat.Controllers
 
             panier.Clear();
 
-            return Json("Commande ajoutée avec succès", JsonRequestBehavior.AllowGet);
+            AddFLash(Utilities.FlashMessageType.Success, "Commande effectuée avec succès");
+            return Json("Commande effectuée avec succès", JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult LoginUtilisateur(string idSession, string matricule, string password)

@@ -23,6 +23,7 @@ namespace AfpEat
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                      "~/Scripts/bootstrap-notify.min.js",
                       "~/Scripts/Slick/slick.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -30,6 +31,7 @@ namespace AfpEat
                       "~/Content/font-awesome.min.css",
                       "~/Content/Slick/slick.css",
                       "~/Content/Slick/slick-theme.css",
+                      "~/Content/animate.css",
                       "~/Content/site.css"));
         }
     }

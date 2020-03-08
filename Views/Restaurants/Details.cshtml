@@ -165,7 +165,8 @@
                         $("#productModal").modal('hide');
                     },
                     error: function (data) {
-                        $(".modal-footer").html("<div class='alert alert-danger'>Erreur : " + data.responseJSON + "</div>");
+                        notify('danger', data.responseJSON);
+                        //$(".modal-footer").html("<div class='alert alert-danger'>Erreur : " + data.responseJSON + "</div>");
                     }
                 });
             });
