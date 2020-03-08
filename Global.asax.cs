@@ -35,15 +35,12 @@ namespace AfpEat
 
             var sessionUtilisateur = db.SessionUtilisateurs.FirstOrDefault(s => s.IdSession == Session.SessionID);
 
-            if (sessionUtilisateur == null)
-            {
-                sessionUtilisateur = new SessionUtilisateur();
-                sessionUtilisateur.IdSession = Session.SessionID;
-                sessionUtilisateur.DateSession = DateTime.Now;
+            sessionUtilisateur = new SessionUtilisateur();
+            sessionUtilisateur.IdSession = Session.SessionID;
+            sessionUtilisateur.DateSession = DateTime.Now;
 
-                db.SessionUtilisateurs.Add(sessionUtilisateur);
-                db.SaveChanges();
-            }
+            db.SessionUtilisateurs.Add(sessionUtilisateur);
+            db.SaveChanges();
         }
 
         protected void Session_End()

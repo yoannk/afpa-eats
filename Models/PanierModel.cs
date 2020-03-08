@@ -8,12 +8,10 @@ namespace AfpEat.Models
     {
         public int IdRestaurant { get; set; }
         public int QuantiteTotale { get; private set; }
-        public decimal Montant { get; private set; }
-        public string PrixFormat { get; private set; }
-
-        public PanierModel()
+        public decimal Montant { get; set; }
+        public string PrixFormat
         {
-            PrixFormat = FormatPrix(0);
+            get => string.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", Montant);
         }
 
         public int AddItem(ItemPanier item)
@@ -25,7 +23,7 @@ namespace AfpEat.Models
             {
                 idItemPanier = item.GetIdProduit();
             }
-            else if(item is MenuPanier)
+            else if (item is MenuPanier)
             {
                 idItemPanier = item.GetIdMenu();
             }
@@ -41,7 +39,6 @@ namespace AfpEat.Models
 
             QuantiteTotale += item.Quantite;
             Montant += item.Quantite * item.Prix;
-            PrixFormat = FormatPrix(Montant);
 
             return itemPanier == null ? 1 : itemPanier.Quantite;
         }
@@ -76,14 +73,16 @@ namespace AfpEat.Models
 
             QuantiteTotale--;
             Montant -= item.Prix;
-            PrixFormat = FormatPrix(Montant);
 
             return itemPanier.Quantite;
         }
 
-        private string FormatPrix(decimal prix)
+        public new void Clear()
         {
-            return string.Format(System.Globalization.CultureInfo.GetCultureInfo("fr-FR"), "{0:0.00}", prix);
+            base.Clear();
+            IdRestaurant = 0;
+            QuantiteTotale = 0;
+            Montant = 0;
         }
     }
 }

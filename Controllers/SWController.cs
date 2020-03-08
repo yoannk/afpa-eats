@@ -229,6 +229,7 @@ namespace AfpEat.Controllers
             db.Commandes.Add(commande);
             db.SaveChanges();
 
+            panier.Clear();
 
             return Json("Commande ajoutée avec succès", JsonRequestBehavior.AllowGet);
         }
