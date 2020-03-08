@@ -10,7 +10,7 @@ using System.Web.Security;
 
 namespace AfpEat.Controllers
 {
-    public class SWController : Controller
+    public class SWController : BaseController
     {
         private AfpEatEntities db = new AfpEatEntities();
 

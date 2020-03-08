@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace AfpEat.Controllers
 {
-    public class DbSeedController : Controller
+    public class DbSeedController : BaseController
     {
         private AfpEatEntities db = new AfpEatEntities();
         Faker faker = new Faker("fr");

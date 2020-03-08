@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Gesprog.Controllers
+namespace AfpEat.Controllers
 {
     public class BaseController : Controller
     {

@@ -10,7 +10,7 @@ using AfpEat;
 
 namespace AfpEat.Controllers
 {
-    public class MenusController : Controller
+    public class MenusController : BaseController
     {
         private AfpEatEntities db = new AfpEatEntities();
 

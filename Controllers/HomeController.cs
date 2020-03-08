@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace AfpEat.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private AfpEatEntities db = new AfpEatEntities();
 

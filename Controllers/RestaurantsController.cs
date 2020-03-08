@@ -11,7 +11,7 @@ using AfpEat.Models;
 
 namespace AfpEat.Controllers
 {
-    public class RestaurantsController : Controller
+    public class RestaurantsController : BaseController
     {
         private AfpEatEntities db = new AfpEatEntities();
 
