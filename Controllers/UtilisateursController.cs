@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using AfpEat;
 using AfpEat.Models;
@@ -120,44 +121,49 @@ namespace AfpEat.Controllers
         [Route("~/connexion")]
         public ActionResult Connexion()
         {
-            return View();
+            return View(new ConnexionViewModel());
         }
 
         // POST: connexion
         [HttpPost]
         [Route("~/connexion")]
         [ValidateAntiForgeryToken]
-        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel, bool? fromPanier)
+        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel)
         {
             string login = connexionViewModel.Login;
             string password = connexionViewModel.Password;
 
-            if (!String.IsNullOrWhiteSpace(login) && !String.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             {
-                Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.Matricule == login && u.Password == password);
-
-                if (utilisateur != null)
-                {
-                    utilisateur.IdSession = Session.SessionID;
-                    db.SaveChanges();
-
-                    Session["Utilisateur"] = utilisateur;
-
-                    PanierModel panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
-
-                    if (fromPanier == true && panier.Count > 0)
-                    {
-                        return RedirectToAction("Panier", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    
-                }
+                connexionViewModel.ErrorMessage = "Veuillez saisir un matricule et un mot de passe";
+                return View(connexionViewModel);
             }
 
-            return View(connexionViewModel);
+            Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.Matricule == login);
+            bool passwordValid = Crypto.VerifyHashedPassword(utilisateur.Password, password);
+
+            if (utilisateur == null || !passwordValid)
+            {
+                connexionViewModel.ErrorMessage = "Mot de passe incorrect";
+                return View(connexionViewModel);
+            }
+
+
+            utilisateur.IdSession = Session.SessionID;
+            db.SaveChanges();
+
+            Session["Utilisateur"] = utilisateur;
+
+            PanierModel panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
+
+            if (panier.Count > 0)
+            {
+                return RedirectToAction("Panier", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: deconnexion

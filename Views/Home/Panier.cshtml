@@ -203,7 +203,7 @@ else
                 if (@isConnected) {
                     saveCommandeSW();
                 } else {
-                    document.location.href='@Url.Action("Connexion", "Utilisateurs", new { fromPanier = true })';
+                    document.location.href='@Url.Action("Connexion", "Utilisateurs")';
                     //$('modalConnexion').modal('show');
                 }
             });

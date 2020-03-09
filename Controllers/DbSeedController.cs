@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace AfpEat.Controllers
@@ -59,7 +60,7 @@ namespace AfpEat.Controllers
 
         private void CreateUtilisateurs(int amount)
         {
-            db.Utilisateurs.Add(new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Matricule = "yoann", Password = "123", Statut = true, Solde = 50 });
+            db.Utilisateurs.Add(new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Matricule = "yoann", Password = Crypto.HashPassword("123"), Statut = true, Solde = 50 });
 
             for (int i = 0; i < amount; i++)
             {
@@ -68,7 +69,7 @@ namespace AfpEat.Controllers
                     Nom = faker.Name.LastName(),
                     Prenom = faker.Name.FirstName(),
                     Matricule = faker.Random.Replace("#####"),
-                    Password = faker.Internet.Password(),
+                    Password = Crypto.HashPassword("123"),
                     Statut = true,
                     Solde = faker.Random.Decimal(0, 100)
                 };

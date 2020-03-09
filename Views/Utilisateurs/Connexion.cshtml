@@ -27,16 +27,20 @@
                 <h4 class="mb-3 font-weight-normal">Connexion</h4>
             </div>
 
-            <div class="mb-3">
-                <!-- alert box -->
-            </div>
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-warning mb-3" role="alert">
+                    @Model.ErrorMessage
+                </div>
+            }
+
 
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
 
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="login" placeholder="Matricule" value="@(Model != null ? Model.Login : "")">
+                    <input type="text" class="form-control" name="login" placeholder="Matricule" value="@Model.Login">
                 </div>
                 <div class="mb-3">
                     <input type="password" class="form-control" name="password" placeholder="Mot de passe">
