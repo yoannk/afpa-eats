@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Security;
 using AfpEat;
 using AfpEat.Models;
 
@@ -128,7 +129,7 @@ namespace AfpEat.Controllers
         [HttpPost]
         [Route("~/connexion")]
         [ValidateAntiForgeryToken]
-        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel)
+        public ActionResult Connexion([Bind(Include = "Login,Password")] ConnexionViewModel connexionViewModel, string returnUrl)
         {
             string login = connexionViewModel.Login;
             string password = connexionViewModel.Password;
@@ -150,15 +151,16 @@ namespace AfpEat.Controllers
 
 
             utilisateur.IdSession = Session.SessionID;
+            FormsAuthentication.SetAuthCookie(utilisateur.IdUtilisateur.ToString(), false);
             db.SaveChanges();
 
             Session["Utilisateur"] = utilisateur;
 
             PanierModel panier = (PanierModel)HttpContext.Application[Session.SessionID] ?? new PanierModel();
 
-            if (panier.Count > 0)
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
-                return RedirectToAction("Panier", "Home");
+                return Redirect(returnUrl);
             }
             else
             {
@@ -171,11 +173,14 @@ namespace AfpEat.Controllers
         public ActionResult Deconnexion()
         {
             Session["Utilisateur"] = null;
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
         }
 
         // GET: mes-commandes
+        [Authorize]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         [Route("~/mes-commandes", Name = "MesCommandes")]
         public ActionResult MesCommandes()
         {
