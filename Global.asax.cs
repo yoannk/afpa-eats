@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace AfpEat
 {
@@ -50,6 +51,9 @@ namespace AfpEat
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
             db.SessionUtilisateurs.Remove(sessionUtilisateur);
             db.SaveChanges();
+
+            Session["Utilisateur"] = null;
+            FormsAuthentication.SignOut();
         }
 
         protected void Application_BeginRequest()

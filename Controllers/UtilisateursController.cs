@@ -185,10 +185,10 @@ namespace AfpEat.Controllers
         public ActionResult MesCommandes()
         {
             Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-            if (utilisateur == null)
-            {
-                return RedirectToAction("Connexion", "Utilisateurs");
-            }
+            //if (utilisateur == null)
+            //{
+            //    return RedirectToAction("Connexion", "Utilisateurs");
+            //}
 
             List<Commande> commandes = db.Commandes.Where(c => c.IdUtilisateur == utilisateur.IdUtilisateur).ToList();
 

@@ -369,7 +369,7 @@ namespace AfpEat.Controllers
                 Nom = "Menu Poke bowl signature & boisson",
                 Restaurant = restoPokawa,
                 Categories = new List<Categorie>() { catPlat, catBoisson },
-                Photo = new Photo { Nom = "Menu Poke bowl signature & boisson" },
+                Photo = new Photo { Nom = "Menu Poke bowl signature & boisson.jpg" },
                 Statut = true,
                 Prix = 12.90m
             });
@@ -379,7 +379,7 @@ namespace AfpEat.Controllers
                 Nom = "Menu Poke bowl signature, boisson & dessert",
                 Restaurant = restoPokawa,
                 Categories = new List<Categorie>() { catPlat, catBoisson, catDessert },
-                Photo = new Photo { Nom = "Menu Poke bowl signature, boisson & dessert" },
+                Photo = new Photo { Nom = "Menu Poke bowl signature, boisson & dessert.jpg" },
                 Statut = true,
                 Prix = 15.90m
             });

@@ -300,6 +300,7 @@
     <Content Include="Ressources\Images\Produits\Macaron caramel.jpg" />
     <Content Include="Ressources\Images\Produits\Macaron chocolat.jpg" />
     <Content Include="Ressources\Images\Produits\Menu Poke bowl signature &amp; boisson.jpg" />
+    <Content Include="Ressources\Images\Produits\Menu Poke bowl signature, boisson &amp; dessert.jpg" />
     <Content Include="Ressources\Images\Produits\Moelleux au chocolat.jpg" />
     <Content Include="Ressources\Images\Produits\Moelleux barbecue cheddar.jpg" />
     <Content Include="Ressources\Images\Produits\Moelleux poulet curry.jpg" />
@@ -311,7 +312,6 @@
     <Content Include="Ressources\Images\Produits\Panini Savoyard.jpg" />
     <Content Include="Ressources\Images\Produits\Pizza aux chèvres.jpg" />
     <Content Include="Ressources\Images\Produits\Pizza lardons champignons.jpg" />
-    <Content Include="Ressources\Images\Produits\Poke bowl signature, boisson &amp; dessert.jpg" />
     <Content Include="Ressources\Images\Produits\Poké Crevettes.jpg" />
     <Content Include="Ressources\Images\Produits\Poké Daurade Royale.jpg" />
     <Content Include="Ressources\Images\Produits\Poké Falafels Bio.jpg" />
