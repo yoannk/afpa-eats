@@ -196,7 +196,7 @@
     <Compile Include="Models\CustomRoleProvider.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\ItemPanier.cs" />
-    <Compile Include="Models\LoggedInUser.cs" />
+    <Compile Include="Models\CustomIdentity.cs" />
     <Compile Include="Models\MenuPanier.cs" />
     <Compile Include="Models\PanierModel.cs" />
     <Compile Include="Models\ProduitComposePanier.cs" />
@@ -592,8 +592,11 @@
     <Content Include="Views\Security\Connexion.cshtml" />
     <Content Include="Views\UtilisateurBackOffice\MesCommandes.cshtml" />
     <Content Include="Views\Shared\_FlashMessage.cshtml" />
-    <Content Include="Views\Shared\_LayoutRestaurateur.cshtml" />
     <Content Include="Views\RestaurateurBackOffice\Index.cshtml" />
+    <Content Include="Views\Shared\_NavbarUtilisateur.cshtml" />
+    <Content Include="Views\Shared\_NavbarRestaurateur.cshtml" />
+    <Content Include="Views\Shared\_NavbarGuest.cshtml" />
+    <Content Include="Views\Shared\_NavbarAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

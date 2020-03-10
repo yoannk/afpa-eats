@@ -107,6 +107,8 @@
     </div>
 </div>
 
+@Html.AntiForgeryToken()
+
 @section scripts
 {
     <script>
@@ -158,16 +160,23 @@
                 $.ajax({
                     url: '@Url.Action("AddProduit", "SW")',
                     type: 'POST',
-                    data: JSON.stringify({ idProduit: produit.idProduit, idSession: '@Session.SessionID', quantite: qte }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        idProduit: produit.idProduit,
+                        idSession: '@Session.SessionID',
+                        quantite: qte,
+                        __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()
+                    },
+                    //dataType: 'json',
+                    //contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    //contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         $("#panierCount").text("(" + data.quantiteTotale + ")");
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
                         $("#productModal").modal('hide');
                     },
                     error: function (data) {
-                        notify('danger', data.responseJSON);
+                        let errorMessage = data.responseJSON !== undefined ? data.responseJSON : "Une erreur est survenue (" + data.statusText + ")";
+                        notify('danger', errorMessage);
                         //$(".modal-footer").html("<div class='alert alert-danger'>Erreur : " + data.responseJSON + "</div>");
                     }
                 });

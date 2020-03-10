@@ -13,15 +13,16 @@ namespace AfpEat.Controllers
         private AfpEatEntities db = new AfpEatEntities();
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult AddProduit(int idProduit, string idSession, int quantite = 1)
         {
-            SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
+            /*SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
 
             if (sessionUtilisateur == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
 
@@ -63,15 +64,16 @@ namespace AfpEat.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult RemoveProduit(int idProduit, string idSession)
         {
-            SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
+            /*SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
 
             if (sessionUtilisateur == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
             Produit produit = db.Produits.Find(idProduit);

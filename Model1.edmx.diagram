@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="87840cffc68f49bfa3efe52d200805fc" Name="Diagram1">
+      <Diagram DiagramId="f90c5ae7eb424e6c9013bbf5e564518b" Name="Diagram1">
         <EntityTypeShape EntityType="AfpEatModel.Categorie" Width="1.5" PointX="9.75" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AfpEatModel.Commande" Width="1.5" PointX="7.5" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AfpEatModel.CommandeProduit" Width="1.5" PointX="9.75" PointY="7.5" IsExpanded="true" />
@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="AfpEatModel.sysdiagram" Width="1.5" PointX="7.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AfpEatModel.TypeCuisine" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AfpEatModel.TypeVersement" Width="1.5" PointX="3" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AfpEatModel.Utilisateur" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AfpEatModel.Utilisateur" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="AfpEatModel.FK_Produit_Categorie" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.FK_Commande_EtatCommande" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.FK_Commande_Restaurant" ManuallyRouted="false" />
@@ -34,13 +34,13 @@
         <AssociationConnector Association="AfpEatModel.FK_Produit_Restaurant" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.FK_Restaurant_TypeCuisine" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.FK_Restaurant_Utilisateur" ManuallyRouted="false" />
-        <AssociationConnector Association="AfpEatModel.FK_Utilisateur_Role" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.CommandeProduitMenu" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.CommandeProduitProduit" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.MenuCategorie" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.ProduitCompose" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.ProduitPhoto" ManuallyRouted="false" />
         <AssociationConnector Association="AfpEatModel.RestaurantPhoto" ManuallyRouted="false" />
+        <AssociationConnector Association="AfpEatModel.RoleUtilisateur" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

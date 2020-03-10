@@ -1,3 +1,4 @@
+using AfpEat.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,42 +20,46 @@ namespace AfpEat
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            AfpEatEntities db = new AfpEatEntities();
+            /*AfpEatEntities db = new AfpEatEntities();
             List<SessionUtilisateur> sessionUtilisateurs = db.SessionUtilisateurs.ToList();
 
             db.SessionUtilisateurs.RemoveRange(sessionUtilisateurs);
-            db.SaveChanges();
+            db.SaveChanges();*/
         }
 
         protected void Application_End()
         {
+            Session.Abandon();
+            FormsAuthentication.SignOut();
         }
 
-        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
-            /*if (HttpContext.Current.User != null)
+            if (FormsAuthentication.CookiesSupported == true)
             {
-                if (HttpContext.Current.User.Identity.IsAuthenticated)
+                if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
                 {
-                    if (HttpContext.Current.User.Identity is FormsIdentity)
+
+                    string login = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
+                    string[] roles = {};
+
+                    using (var db = new AfpEatEntities())
                     {
-                        FormsIdentity fid = (FormsIdentity)Context.User.Identity;
-                        FormsAuthenticationTicket t = fid.Ticket;
-                        string[] roles = t.UserData.Split(';');
-                        Context.User = new GenericPrincipal(fid, roles);
+                        Utilisateur utilisateur = db.Utilisateurs.SingleOrDefault(u => u.Login == login);
+
+                        roles = utilisateur.Roles.Select(r => r.Nom).ToArray();
+
+                        CustomIdentity customIdentity = new CustomIdentity(utilisateur, "Forms");
+
+                        HttpContext.Current.User = new GenericPrincipal(customIdentity, roles);
                     }
                 }
-            }*/
-
-            //if (HttpContext.Current.User?.Identity?.Name != null && HttpContext.Current.User?.Identity is FormsIdentity identity)
-            //    return JsonConvert.DeserializeObject<LoggedInUser>(identity.Ticket.UserData);
-
-            //return new LoggedInUser();
+            }
         }
 
         protected void Session_Start()
         {
-            AfpEatEntities db = new AfpEatEntities();
+            /*AfpEatEntities db = new AfpEatEntities();
 
             var sessionUtilisateur = db.SessionUtilisateurs.FirstOrDefault(s => s.IdSession == Session.SessionID);
 
@@ -63,19 +68,21 @@ namespace AfpEat
             sessionUtilisateur.DateSession = DateTime.Now;
 
             db.SessionUtilisateurs.Add(sessionUtilisateur);
-            db.SaveChanges();
+            db.SaveChanges();*/
         }
 
         protected void Session_End()
         {
-            AfpEatEntities db = new AfpEatEntities();
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+            /*AfpEatEntities db = new AfpEatEntities();
 
             SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
             db.SessionUtilisateurs.Remove(sessionUtilisateur);
             db.SaveChanges();
 
             Session["Utilisateur"] = null;
-            FormsAuthentication.SignOut();
+            FormsAuthentication.SignOut();*/
         }
 
         protected void Application_BeginRequest()

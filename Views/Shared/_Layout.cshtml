@@ -1,8 +1,7 @@
 ﻿@using AfpEat.Models
 
 @{
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    PanierModel panier = (PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
+    var utilisateur = User.Identity as AfpEat.Models.CustomIdentity;
 }
 
 <!DOCTYPE html>
@@ -16,50 +15,23 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light bg-navbar border-bottom box-shadow">
-        <a class="navbar-brand" href="@Url.Action("Index", "Home")">
-            <img src="@Url.Content("~/Ressources/Images/Site/logo_afpa.png")" width="38" height="38" alt="logo AFPA">
-            AfpaEats
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Accueil</a>
-                <a class="nav-item nav-link" href="@Url.Action("Index", "Produits")"><i class="fa fa-th-list"></i> Produits</a>
-                <a class="nav-item nav-link" href="@Url.Action("Commande", "Produits")"><i class="fa fa-cutlery"></i> Commander</a>
-            </div>
-        </div>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Panier", "Home")"><span id="panierCount">(@panier.QuantiteTotale)</span> <span id="panierPrixTotal">@panier.PrixFormat €</span> <i class="fa fa-shopping-cart"></i> Panier</a>
-            </li>
-
-            @if (utilisateur != null)
-            {
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user"></i> @utilisateur.Prenom @utilisateur.Nom
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="@Url.RouteUrl("MesCommandes")"><i class="fa fa-user-circle-o"></i> Mes Commandes</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="@Url.Action("Deconnexion", "Security")"><i class="fa fa-user-times"></i> Déconnexion</a>
-                    </div>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Connexion", "Security")"><i class="fa fa-user"></i> Connexion</a>
-                </li>
-            }
-
-        </ul>
-
-    </nav>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        @Html.Partial("~/Views/Shared/_NavbarGuest.cshtml")
+    }
+    else if (User.IsInRole("Utilisateur"))
+    {
+        @Html.Partial("~/Views/Shared/_NavbarUtilisateur.cshtml")
+    }
+    else if (User.IsInRole("Restaurateur"))
+    {
+        @Html.Partial("~/Views/Shared/_NavbarRestaurateur.cshtml")
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        @Html.Partial("~/Views/Shared/_NavbarAdmin.cshtml")
+    }
 
     @RenderSection("jumbotron", required: false)
 

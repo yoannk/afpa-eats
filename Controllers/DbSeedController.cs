@@ -43,6 +43,7 @@ namespace AfpEat.Controllers
             db.Database.ExecuteSqlCommand("EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'");
             db.Database.ExecuteSqlCommand("DELETE FROM [Role]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Utilisateur]");
+            db.Database.ExecuteSqlCommand("DELETE FROM [RoleUtilisateur]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Restaurant]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Produit]");
             db.Database.ExecuteSqlCommand("DELETE FROM [TypeCuisine]");
@@ -59,12 +60,15 @@ namespace AfpEat.Controllers
 
         private void CreateUtilisateurs(int amount)
         {
+            Role roleAdmin = db.Roles.First(r => r.Nom == "Admin");
+            Role roleUtilisateur = db.Roles.First(r => r.Nom == "Utilisateur");
+
             Utilisateur admin = new Utilisateur() { Nom = "TuTu", Prenom = "Toto", Login = "admin", Password = Crypto.HashPassword("123"), Statut = true, Solde = 0 };
-            admin.Role = db.Roles.First(r => r.Nom == "Restaurateur");
+            admin.Roles.Add(roleAdmin);
             db.Utilisateurs.Add(admin);
 
             Utilisateur yoann = new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Login = "yoann", Password = Crypto.HashPassword("123"), Statut = true, Solde = 500 };
-            yoann.Role = db.Roles.First(r => r.Nom == "Utilisateur");
+            yoann.Roles.Add(roleUtilisateur);
             db.Utilisateurs.Add(yoann);
 
             for (int i = 0; i < amount; i++)
@@ -81,6 +85,7 @@ namespace AfpEat.Controllers
                     Solde = faker.Random.Decimal(0, 100)
                 };
 
+                utilisateur.Roles.Add(roleUtilisateur);
                 db.Utilisateurs.Add(utilisateur);
                 logs.Add($"Ajout utilisateur #{i} {utilisateur.Prenom} {utilisateur.Nom}");
             }
@@ -210,6 +215,7 @@ namespace AfpEat.Controllers
         private Restaurant CreateRestaurant(string typeCuisine, string nom, string photo)
         {
             var idTypeCuisines = db.TypeCuisines.First(tc => tc.Nom == typeCuisine).IdTypeCuisine;
+            Role roleRestaurateur = db.Roles.First(r => r.Nom == "Restaurateur");
             var person = new Person("fr");
 
             var restaurant = new Restaurant()
@@ -237,7 +243,7 @@ namespace AfpEat.Controllers
                 Solde = 0
             };
 
-            restaurateur.Role = db.Roles.First(r => r.Nom == "Restaurateur");
+            restaurateur.Roles.Add(roleRestaurateur);
 
             restaurant.Photos.Add(new Photo() { Nom = photo });
             restaurant.Utilisateur = restaurateur;

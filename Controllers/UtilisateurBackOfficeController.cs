@@ -18,12 +18,9 @@ namespace AfpEat.Controllers
         [Route("~/mes-commandes", Name = "MesCommandes")]
         public ActionResult MesCommandes()
         {
-            var utilisateur = User;
-            var identity = User.Identity;
-            var isInRole = User.IsInRole("Utilisateur");
+            var identity = (CustomIdentity)User.Identity;
 
-            //List<Commande> commandes = db.Commandes.Include(c => c.CommandeProduits).Where(c => c.IdUtilisateur == utilisateur.IdUtilisateur).ToList();
-            var commandes = new List<Commande>();
+            List<Commande> commandes = db.Commandes.Include(c => c.CommandeProduits).Where(c => c.IdUtilisateur == identity.IdUtilisateur).ToList();
 
             return View(commandes);
         }

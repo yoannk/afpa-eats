@@ -49,52 +49,28 @@ namespace AfpEat.Controllers
             //db.SaveChanges();
             //Session["Utilisateur"] = utilisateur;
 
-            LoggedInUser loggedInUser = new LoggedInUser()
-            {
-                IdUtilisateur = utilisateur.IdUtilisateur,
-                Nom = utilisateur.Nom,
-                Prenom = utilisateur.Prenom,
-                Login = utilisateur.Login,
-                Role = utilisateur.Role.Nom
-            };
-
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                1,                              	                            // version
-                utilisateur.Login,       	  		                            // user name
-                DateTime.Now,                   	                            // issue time
-                DateTime.Now.AddMinutes(30),       	                            // expires soon
-                false, 				            	                            // persist cookie
-                JsonConvert.SerializeObject(loggedInUser ?? new LoggedInUser()) // data
-            );
-
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
-            Response.Cookies.Add(cookie);
-
-            //FormsAuthentication.SetAuthCookie(utilisateur.IdUtilisateur.ToString(), false);
+            FormsAuthentication.SetAuthCookie(utilisateur.Login, false);
 
             if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
 
-            switch (utilisateur.Role.Nom)
+
+            foreach (var role in utilisateur.Roles)
             {
-                case "Utilisateur":
-                    return RedirectToAction("Index", "Home");
-                case "Restaurateur":
-                    return RedirectToAction("Index", "RestaurateurBackOffice");
-                case "Admin":
-                    return RedirectToAction("Index", "AdminBackOffice");
-                default:
-                    return RedirectToAction("Index", "Home");
+                if (role.Nom == "Admin") return RedirectToAction("Index", "AdminBackOffice");
+                if (role.Nom == "Restaurateur") return RedirectToAction("Index", "RestaurateurBackOffice");
+                if (role.Nom == "Utilisateur") return RedirectToAction("Index", "Home");
             }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: deconnexion
         [Route("~/deconnexion")]
         public ActionResult Deconnexion()
         {
-            //Session["Utilisateur"] = null;
             FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");

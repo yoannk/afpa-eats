@@ -1,0 +1,29 @@
+﻿@using AfpEat.Models
+
+@{
+    var utilisateur = User.Identity as AfpEat.Models.CustomIdentity;
+    PanierModel panier = (PanierModel)HttpContext.Current.Application[Session.SessionID] ?? new PanierModel();
+}
+
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-navbar border-bottom box-shadow">
+    <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+        <img src="@Url.Content("~/Ressources/Images/Site/logo_afpa.png")" width="38" height="38" alt="logo AFPA">
+        AfpaEats
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Accueil</a>
+            <a class="nav-item nav-link" href="@Url.Action("Index", "Produits")"><i class="fa fa-th-list"></i> Produits</a>
+            <a class="nav-item nav-link" href="@Url.Action("Commande", "Produits")"><i class="fa fa-cutlery"></i> Commander</a>
+        </div>
+    </div>
+
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Deconnexion", "Security")"><i class="fa fa-user-times"></i> Déconnexion</a>
+        </li>
+    </ul>
+</nav>

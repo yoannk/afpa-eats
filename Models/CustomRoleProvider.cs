@@ -49,7 +49,7 @@ namespace AfpEat.Models
                     return new string[] { };
                 }
 
-                return new string[] { utilisateur.Role.Nom };
+                return utilisateur.Roles.Select(r => r.Nom).ToArray();
             }
         }
 
@@ -69,7 +69,7 @@ namespace AfpEat.Models
                     return false;
                 }
 
-                return utilisateur.Role.Nom == roleName;
+                return utilisateur.Roles.Any(r => r.Nom == roleName);
             }
         }
 

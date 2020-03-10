@@ -137,6 +137,8 @@ else
     </div>
 </div>
 
+@Html.AntiForgeryToken()
+
 @section scripts
 {
     <script type="text/javascript">
@@ -150,9 +152,11 @@ else
                 $.ajax({
                     url: '@Url.Action("AddProduit", "SW")',
                     type: 'POST',
-                    data: JSON.stringify({ idProduit: id, idSession: '@Session.SessionID' }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        idProduit: id,
+                        idSession: '@Session.SessionID',
+                        __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()
+                    },
                     success: function (data) {
                         $("#panierCount").text("(" + data.quantiteTotale + ")");
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
@@ -163,7 +167,7 @@ else
                     },
                     error: () => console.log('error', data)
                 });
-                
+
             });
 
             $('#panier').on('click', '.panier-remove-qte', function () {
@@ -174,9 +178,11 @@ else
                 $.ajax({
                     url: '@Url.Action("RemoveProduit", "SW")',
                     type: 'POST',
-                    data: JSON.stringify({ idProduit: id, idSession: '@Session.SessionID' }),
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
+                    data: {
+                        idProduit: id,
+                        idSession: '@Session.SessionID',
+                        __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()
+                    },
                     success: function (data) {
                         $("#panierCount").text("(" + data.quantiteTotale + ")");
                         $("#panierPrixTotal").text(data.prixTotalFormat + " €");
@@ -196,7 +202,7 @@ else
                     },
                     error: () => console.log('error', data)
                 });
-                
+
             });
 
             $("#btnCommande").click(function () {
