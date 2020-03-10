@@ -236,7 +236,7 @@ namespace AfpEat.Controllers
 
         public JsonResult LoginUtilisateur(string idSession, string matricule, string password)
         {
-            Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.Matricule == matricule && u.Password == password);
+            Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.Login == matricule && u.Password == password);
 
             if (utilisateur != null)
             {

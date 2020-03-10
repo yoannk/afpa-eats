@@ -26,6 +26,7 @@ namespace AfpEat.Controllers
         {
             ClearTables();
 
+            CreateRoles();
             CreateUtilisateurs(Convert.ToInt32(form["utilisateursQte"]));
             CreateTypeCuisinePhotos();
             CreateTypeCuisine();
@@ -40,6 +41,7 @@ namespace AfpEat.Controllers
         private void ClearTables()
         {
             db.Database.ExecuteSqlCommand("EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'");
+            db.Database.ExecuteSqlCommand("DELETE FROM [Role]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Utilisateur]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Restaurant]");
             db.Database.ExecuteSqlCommand("DELETE FROM [Produit]");
@@ -57,15 +59,23 @@ namespace AfpEat.Controllers
 
         private void CreateUtilisateurs(int amount)
         {
-            db.Utilisateurs.Add(new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Matricule = "yoann", Password = Crypto.HashPassword("123"), Statut = true, Solde = 50 });
+            Utilisateur admin = new Utilisateur() { Nom = "TuTu", Prenom = "Toto", Login = "admin", Password = Crypto.HashPassword("123"), Statut = true, Solde = 0 };
+            admin.Role = db.Roles.First(r => r.Nom == "Restaurateur");
+            db.Utilisateurs.Add(admin);
+
+            Utilisateur yoann = new Utilisateur() { Nom = "Kergall", Prenom = "Yoann", Login = "yoann", Password = Crypto.HashPassword("123"), Statut = true, Solde = 500 };
+            yoann.Role = db.Roles.First(r => r.Nom == "Utilisateur");
+            db.Utilisateurs.Add(yoann);
 
             for (int i = 0; i < amount; i++)
             {
+                var person = new Person("fr");
+
                 Utilisateur utilisateur = new Utilisateur()
                 {
-                    Nom = faker.Name.LastName(),
-                    Prenom = faker.Name.FirstName(),
-                    Matricule = faker.Random.Replace("#####"),
+                    Nom = person.LastName,
+                    Prenom = person.FirstName,
+                    Login = person.UserName,
                     Password = Crypto.HashPassword("123"),
                     Statut = true,
                     Solde = faker.Random.Decimal(0, 100)
@@ -74,6 +84,16 @@ namespace AfpEat.Controllers
                 db.Utilisateurs.Add(utilisateur);
                 logs.Add($"Ajout utilisateur #{i} {utilisateur.Prenom} {utilisateur.Nom}");
             }
+
+            db.SaveChanges();
+        }
+
+        private void CreateRoles()
+        {
+            db.Roles.Add(new Role() { Nom = "Utilisateur" });
+            db.Roles.Add(new Role() { Nom = "Restaurateur" });
+            db.Roles.Add(new Role() { Nom = "Admin" });
+            logs.Add("Ajout de 3 rôles");
 
             db.SaveChanges();
         }
@@ -204,13 +224,23 @@ namespace AfpEat.Controllers
                 Mobile = faker.Random.Replace("06########"),
                 Email = person.Email,
                 CodePostal = person.Address.ZipCode,
-                Ville = person.Address.City,
-                Login = person.UserName,
-                Password = faker.Internet.Password()
-
+                Ville = person.Address.City
             };
 
+            Utilisateur restaurateur = new Utilisateur()
+            {
+                Nom = person.LastName,
+                Prenom = person.FirstName,
+                Login = person.UserName,
+                Password = Crypto.HashPassword("123"),
+                Statut = true,
+                Solde = 0
+            };
+
+            restaurateur.Role = db.Roles.First(r => r.Nom == "Restaurateur");
+
             restaurant.Photos.Add(new Photo() { Nom = photo });
+            restaurant.Utilisateur = restaurateur;
             db.Restaurants.Add(restaurant);
             logs.Add("Ajout restaurant : " + restaurant.Nom);
 

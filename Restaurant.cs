@@ -35,8 +35,7 @@ namespace AfpEat
         public string Email { get; set; }
         public string CodePostal { get; set; }
         public string Ville { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public Nullable<int> IdUtilisateur { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Commande> Commandes { get; set; }
@@ -45,6 +44,7 @@ namespace AfpEat
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Produit> Produits { get; set; }
         public virtual TypeCuisine TypeCuisine { get; set; }
+        public virtual Utilisateur Utilisateur { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Photo> Photos { get; set; }
     }

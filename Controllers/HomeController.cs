@@ -1,6 +1,7 @@
 ﻿using AfpEat.Models;
 using AfpEat.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -30,7 +31,7 @@ namespace AfpEat.Controllers
 
 
             homeViewModel.TypeCuisines = db.TypeCuisines.ToList();
-            homeViewModel.PaginatedRestaurants = restaurants.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            homeViewModel.PaginatedRestaurants = restaurants.Count() > 0 ? restaurants.Skip((page - 1) * pageSize).Take(pageSize).ToList() : new List<Restaurant>();
             homeViewModel.PageIndex = page;
             homeViewModel.TotalPages = totalPages;
 

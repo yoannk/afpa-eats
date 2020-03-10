@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -26,7 +28,28 @@ namespace AfpEat
 
         protected void Application_End()
         {
+        }
 
+        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        {
+            /*if (HttpContext.Current.User != null)
+            {
+                if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    if (HttpContext.Current.User.Identity is FormsIdentity)
+                    {
+                        FormsIdentity fid = (FormsIdentity)Context.User.Identity;
+                        FormsAuthenticationTicket t = fid.Ticket;
+                        string[] roles = t.UserData.Split(';');
+                        Context.User = new GenericPrincipal(fid, roles);
+                    }
+                }
+            }*/
+
+            //if (HttpContext.Current.User?.Identity?.Name != null && HttpContext.Current.User?.Identity is FormsIdentity identity)
+            //    return JsonConvert.DeserializeObject<LoggedInUser>(identity.Ticket.UserData);
+
+            //return new LoggedInUser();
         }
 
         protected void Session_Start()
