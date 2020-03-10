@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace AfpEat.Controllers
 {
@@ -21,6 +19,7 @@ namespace AfpEat.Controllers
 
             if (sessionUtilisateur == null)
             {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return Json("Session incorrecte", JsonRequestBehavior.AllowGet);
             }
 

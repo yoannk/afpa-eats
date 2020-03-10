@@ -25,49 +25,6 @@
 }
 
 <div id="products">
-    @* Affichage des Menus *@
-    @if (Model.Menus.Count > 0)
-    {
-        <h2 class="mb-4">Les Menus</h2>
-
-        <div class="row row-cols-md-2 row-cols-sm-1">
-            @foreach (var menu in Model.Menus)
-            {
-                <div class="col mb-4">
-
-                    @{
-                        var itemInPanier = Model.Panier.FirstOrDefault(p => p.GetIdMenu() == menu.IdMenu);
-
-                        var jsonMenu = Newtonsoft.Json.JsonConvert.SerializeObject(new
-                        {
-                            id = menu.IdMenu,
-                            nom = menu.Nom,
-                            photo = menu.Photo.Nom,
-                            description = "...",
-                            quantite = itemInPanier?.Quantite ?? 0,
-                            prix = menu.Prix
-                        });
-                    }
-
-                    <div class="card card-produit mb-3" data-produit="@jsonMenu ">
-                        <div class="row no-gutters">
-
-                            <div class="col-md-4">
-                                <img src="@Url.Content("~/Ressources/Images/Produits/" + menu.Photo.Nom)" class="card-img">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body overflow-hidden d-flex flex-column">
-                                    <h5 class="card-title">@menu.Nom</h5>
-                                    <p class="card-text">...</p>
-                                    <span class="text-muted small mt-auto">@menu.Prix €</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
 
     @* Affichage des Produits par Catégories *@
     @foreach (var item in Model.Produits)
@@ -201,7 +158,7 @@
                 $.ajax({
                     url: '@Url.Action("AddProduit", "SW")',
                     type: 'POST',
-                    data: JSON.stringify({ idProduit: produit.id, idSession: '@Session.SessionID', quantite: qte }),
+                    data: JSON.stringify({ idProduit: produit.idProduit, idSession: '@Session.SessionID', quantite: qte }),
                     dataType: 'json',
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {

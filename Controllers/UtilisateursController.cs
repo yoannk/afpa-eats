@@ -1,15 +1,12 @@
-﻿using System;
+﻿using AfpEat.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
-using AfpEat;
-using AfpEat.Models;
 
 namespace AfpEat.Controllers
 {

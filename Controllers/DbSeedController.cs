@@ -1,11 +1,8 @@
 ﻿using AfpEat.Utilities;
 using Bogus;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
-using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
@@ -121,7 +118,7 @@ namespace AfpEat.Controllers
             db.Categories.Add(new Categorie() { Nom = "Pâtes", Statut = true });
             db.Categories.Add(new Categorie() { Nom = "Panini", Statut = true });
             db.Categories.Add(new Categorie() { Nom = "Pizza", Statut = true });
-            db.Categories.Add(new Categorie() { Nom = "Sandwich", Statut = true }); 
+            db.Categories.Add(new Categorie() { Nom = "Sandwich", Statut = true });
             logs.Add("Ajout de 7 catégories");
 
             db.SaveChanges();
