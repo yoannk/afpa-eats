@@ -1,9 +1,11 @@
 ﻿using AfpEat.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web.Mvc;
 
 namespace AfpEat.Controllers
@@ -19,8 +21,9 @@ namespace AfpEat.Controllers
         public ActionResult MesCommandes()
         {
             var identity = (CustomIdentity)User.Identity;
+            int id = identity.Utilisateur.IdUtilisateur;
 
-            List<Commande> commandes = db.Commandes.Include(c => c.CommandeProduits).Where(c => c.IdUtilisateur == identity.IdUtilisateur).ToList();
+            List<Commande> commandes = db.Commandes.Include(c => c.CommandeProduits).Where(c => c.IdUtilisateur == id).ToList();
 
             return View(commandes);
         }

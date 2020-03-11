@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace AfpEat.Controllers
 {
-    public class RestaurateurBackOfficeController : Controller
+    public class AdminBackOfficeController : Controller
     {
         // GET: Restaurateur
-        [Authorize(Roles = "Restaurateur")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             return View();

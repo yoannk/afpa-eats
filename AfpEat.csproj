@@ -162,6 +162,7 @@
     <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\DbSeedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AdminBackOfficeController.cs" />
     <Compile Include="Controllers\RestaurateurBackOfficeController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\SWController.cs" />
@@ -597,6 +598,7 @@
     <Content Include="Views\Shared\_NavbarRestaurateur.cshtml" />
     <Content Include="Views\Shared\_NavbarGuest.cshtml" />
     <Content Include="Views\Shared\_NavbarAdmin.cshtml" />
+    <Content Include="Views\AdminBackOffice\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -2,6 +2,7 @@ using AfpEat.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -39,15 +40,13 @@ namespace AfpEat
             {
                 if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
                 {
-
                     string login = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
-                    string[] roles = {};
 
                     using (var db = new AfpEatEntities())
                     {
                         Utilisateur utilisateur = db.Utilisateurs.SingleOrDefault(u => u.Login == login);
 
-                        roles = utilisateur.Roles.Select(r => r.Nom).ToArray();
+                        var roles = utilisateur.Roles.Select(r => r.Nom).ToArray();
 
                         CustomIdentity customIdentity = new CustomIdentity(utilisateur, "Forms");
 

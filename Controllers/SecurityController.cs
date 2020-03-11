@@ -49,6 +49,13 @@ namespace AfpEat.Controllers
             //db.SaveChanges();
             //Session["Utilisateur"] = utilisateur;
 
+            // Efface panier si un autre utilisateur était connecté
+            if (User.Identity.IsAuthenticated)
+            {
+                HttpContext.Application[Session.SessionID] = null;
+            }
+
+
             FormsAuthentication.SetAuthCookie(utilisateur.Login, false);
 
             if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -71,6 +78,7 @@ namespace AfpEat.Controllers
         [Route("~/deconnexion")]
         public ActionResult Deconnexion()
         {
+            HttpContext.Application[Session.SessionID] = null;
             FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
