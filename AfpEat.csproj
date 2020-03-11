@@ -194,7 +194,6 @@
     </Compile>
     <Compile Include="Models\CommandeViewModel.cs" />
     <Compile Include="Models\ConnexionViewModel.cs" />
-    <Compile Include="Models\CustomRoleProvider.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\ItemPanier.cs" />
     <Compile Include="Models\CustomIdentity.cs" />
