@@ -1,0 +1,15 @@
+﻿Back Office Utilisateur :
+	- Liste des commandes
+	- Possibilité de passer à nouveau une ancienne commande
+
+Back Office Restaurateur :
+	- Ajouter des produits
+	- Editer un produit
+	- Supprimer produit
+
+Back Office Admin :
+	- Gestion Utilisateurs
+	- Gestion Restaurateurs
+	- Gestion Produits
+
+Ajout Avis / Notes
