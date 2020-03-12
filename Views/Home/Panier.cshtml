@@ -3,8 +3,7 @@
 
 @{
     ViewBag.Title = "Panier";
-    Utilisateur utilisateur = (Utilisateur)Session["Utilisateur"];
-    string isConnected = utilisateur != null ? "true" : "false";
+    string isConnected = User.Identity.IsAuthenticated ? "true" : "false";
 }
 
 

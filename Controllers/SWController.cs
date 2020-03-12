@@ -169,10 +169,8 @@ namespace AfpEat.Controllers
 
         public JsonResult SaveCommande(string idSession)
         {
-            SessionUtilisateur sessionUtilisateur = db.SessionUtilisateurs.Find(Session.SessionID);
             PanierModel panier = (PanierModel)HttpContext.Application[idSession] ?? new PanierModel();
-
-            Utilisateur utilisateur = db.Utilisateurs.FirstOrDefault(u => u.IdSession == idSession);
+            Utilisateur utilisateur = ((CustomIdentity)User.Identity).Utilisateur;
 
             if (utilisateur == null)
             {
